@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import me.smallyellow.hhy.config.db.DatabaseContextHolder;
+import me.smallyellow.hhy.config.db.DatabaseType;
 import me.smallyellow.hhy.config.db.OtherDataSource;
 import me.smallyellow.hhy.mapper.AppMapper;
 import me.smallyellow.hhy.mapper.UserInfoMapper;
@@ -15,16 +17,17 @@ import me.smallyellow.hhy.model.UserInfo;
 public class TestService {
 
 	@Autowired
-	private UserInfoMapper userInfoMapper;
+	private UserInfoMapper userInfoMapper; 
 	
 	@Autowired
-	private AppMapper appMapper;
+	private AppMapper appMapper; 
 	
+	//数据源1
 	public List<UserInfo> test() {
 		List<UserInfo> list= userInfoMapper.selectAll();
 		return list;
 	}
-	
+	//数据源2
 	@OtherDataSource
 	public List<App> test2(){
 		List<App> list = appMapper.selectAll();
