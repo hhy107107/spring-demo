@@ -34,6 +34,11 @@
             <groupId>org.springframework.boot</groupId>  
             <artifactId>spring-boot-starter-web</artifactId>  
         </dependency>
+        <!-- Spring Boot websocket -->
+    	<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
+		</dependency>
         <!--spring boot 配置处理器 --> 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -115,6 +120,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+		<dependency>
+		   <groupId>javax.websocket</groupId>
+		   <artifactId>javax.websocket-api</artifactId>
+		   <version>1.1</version>
+		   <scope>provided</scope>
 		</dependency>
     </dependencies>  
   

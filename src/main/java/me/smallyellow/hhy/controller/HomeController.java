@@ -48,6 +48,11 @@ public class HomeController {
 		model.addAttribute("vue", vue);
 		return "index";
 	}
+	
+	@RequestMapping(value = "/ws", method = RequestMethod.GET)
+	public String ws(HttpServletRequest request, HttpServletResponse response, Model model){
+		return "ws2";
+	}
 
 	
 	@RequestMapping(value="/test", method = RequestMethod.GET)
