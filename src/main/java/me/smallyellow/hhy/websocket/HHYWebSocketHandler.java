@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -21,16 +22,12 @@ public class HHYWebSocketHandler extends TextWebSocketHandler{
     static {
         users = new ArrayList<WebSocketSession>();
     }
-    
-    public HHYWebSocketHandler() {
-        // TODO Auto-generated constructor stub
-    }
-
+   
     /**
      * 连接成功时候，会触发页面上onopen方法
      */
+    @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        // TODO Auto-generated method stub
         System.out.println("connect to the websocket success......当前数量:"+users.size());
         users.add(session);
         //这块会实现自己业务，比如，当用户登录后，会把离线消息推送给用户
@@ -41,6 +38,7 @@ public class HHYWebSocketHandler extends TextWebSocketHandler{
     /**
      * 关闭连接时触发
      */
+    @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
         logger.debug("websocket connection closed......");
         String username= (String) session.getAttributes().get("WEBSOCKET_USERNAME");
@@ -57,12 +55,13 @@ public class HHYWebSocketHandler extends TextWebSocketHandler{
         super.handleTextMessage(session, message);
     }
 
+    @Override
     public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
         if(session.isOpen()){session.close();}
         logger.debug("websocket connection closed......");
         users.remove(session);
     }
-
+    @Override
     public boolean supportsPartialMessages() {
         return false;
     }

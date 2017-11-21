@@ -1,10 +1,14 @@
 package me.smallyellow.hhy.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+import org.springframework.web.socket.handler.TextWebSocketHandler;
+
+import me.smallyellow.hhy.websocket.HHYWebSocketHandler;
 
 /**
  * ws 配置
@@ -20,7 +24,8 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 		//将/endpointSang路径注册为STOMP 端点
 		//端点的作用——客户端在订阅或发布消息 到目的地址前，要连接该端点
 		//用户发送请求/smallyellow/endpointSang与 STOMP server 进行连接，之后再转发到 订阅url
-		stompEndpointRegistry.addEndpoint("/endpointSang").withSockJS();	
+		stompEndpointRegistry.addEndpoint("/endpointSang").withSockJS();
+		stompEndpointRegistry.addEndpoint("/chat").withSockJS();	
 	}
 	
 	@Override
@@ -31,6 +36,11 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
         // registry.setApplicationDestinationPrefixes("/app");
         // 应用程序以 /app 为前缀，而 代理目的地以 /topic或/queue 为前缀.
         // js.url = "/xx/app/hello" -> @MessageMapping("/hello") 注释的方法.
+    }
+
+	@Bean
+    public TextWebSocketHandler webSocketHandler(){
+        return new HHYWebSocketHandler();
     }
 
 }

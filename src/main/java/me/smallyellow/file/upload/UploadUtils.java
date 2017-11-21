@@ -19,15 +19,17 @@ public class UploadUtils {
 	 * @param fileDir 文件保存子路径
 	 * @param classify 文件分类名
 	 * @param fileName 文件名
+	 * @param needReturnSize 是否需要返回上传进度
 	 * @return
 	 */
-	public static UploadResult uploadFile(InputStream inputStream, String fileUrl, String fileDir, String classify, String fileName){
+	public static UploadResult uploadFile(InputStream inputStream, String fileUrl, String fileDir, 
+			String classify, String fileName, boolean needReturnSize){
 		UploadResult result = new UploadResult();
 		String ext = fileName.substring(fileName.lastIndexOf(".")); //文件后缀
 		String subPath = classify + File.separator + DateUtils.dateToString(new Date(), 1);
 		String realUploadPath = fileDir + subPath;
 		try {
-			String saveFileName = FileUtis.saveFile(inputStream, realUploadPath, null, ext);
+			String saveFileName = FileUtis.saveFile(inputStream, realUploadPath, null, ext, needReturnSize);
 			String filePath = subPath + File.separator + saveFileName;
 			result.setStatus(ResultStatus.SUCCESS);
 			result.setFilePath(filePath);
