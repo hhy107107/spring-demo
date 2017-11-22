@@ -19,7 +19,9 @@ public class AjaxResult implements Serializable {
 	private String message;// 返回消息
 	private Object result;// 返回数据
 
-	public AjaxResult() {}
+	public AjaxResult() {
+		this.code = FAILURE;
+	}
 	
 	public AjaxResult(int code, String message) {
 		this.code = code;

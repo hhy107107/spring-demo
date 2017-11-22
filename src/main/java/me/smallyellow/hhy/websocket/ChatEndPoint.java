@@ -1,31 +1,47 @@
 package me.smallyellow.hhy.websocket;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.servlet.http.HttpSession;
 import javax.websocket.CloseReason;
 import javax.websocket.Endpoint;
 import javax.websocket.EndpointConfig;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
-import org.springframework.web.socket.server.standard.SpringConfigurator;
+import me.smallyellow.base.boot.web.exception.WebException;
+import me.smallyellow.base.core.utils.CollectionUtils;
+import me.smallyellow.hhy.config.HttpSessionConfigurator;
+import me.smallyellow.hhy.constant.CommonConst;
+import me.smallyellow.hhy.model.UserInfo;
 
 /**
  * 定义一个端点
  * @author hhy
  * 2017年11月21日下午7:18:51
  */
-@ServerEndpoint(value="/chat", configurator = SpringConfigurator.class)
+@ServerEndpoint(value="/chat", configurator = HttpSessionConfigurator.class)
 public class ChatEndPoint extends Endpoint{
 
+	private static final Map<Integer, Session> sessionMap; //当前连接的用户
+	
+	static{
+		sessionMap = new HashMap<>();
+	}
+	
 	@Override
-	public void onOpen(Session session, EndpointConfig arg1) {
+	public void onOpen(Session session, EndpointConfig config) {
 		System.out.println("被打开了..");
 		session.addMessageHandler(new ChatMessageHandler());
-		try {
-			session.getBasicRemote().sendText("我在跟你说话");
-		} catch (IOException e) {
-			e.printStackTrace();
+		HttpSession httpSession = (HttpSession) config.getUserProperties().
+				get(HttpSession.class.getName());
+		UserInfo userInfo = (UserInfo) httpSession.getAttribute(CommonConst.USER);
+		if(userInfo != null) {
+			sessionMap.put(userInfo.getId(), session);
+		} else {
+			throw new WebException("未登录");
 		}
 	}
 	
@@ -39,5 +55,45 @@ public class ChatEndPoint extends Endpoint{
 	public void onError(Session session, Throwable throwable) {
 		super.onError(session, throwable);
 		System.out.println("发生了错误..");
+	}
+	
+	/**
+	 * 给指定用户发送消息
+	 * @param userId 指定用户id
+	 * @param message 消息内容
+	 */
+	public void sendMessage(Integer userId, String message) {
+		Session session = sessionMap.get(userId);
+		if(session != null) {
+			//可以发送消息
+			try {
+				session.getBasicRemote().sendText(message);
+				System.out.println("发送了消息：" + message);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			throw new WebException("暂不支持离线消息");
+		}
+	}
+	
+	/**
+	 * 向所有用户发送消息
+	 * @param message 消息内容
+	 */
+	public void sendMessage(String message) {
+		if(CollectionUtils.isNotEmpty(sessionMap)){
+			for (Map.Entry<Integer, Session> entry : sessionMap.entrySet()) {
+				Session session = entry.getValue();
+				try {
+					session.getBasicRemote().sendText(message);
+					System.out.println("发送了消息：" + message);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		} else {
+			throw new WebException("当前没有用户在线");
+		}
 	}
 }

@@ -8,6 +8,7 @@ import me.smallyellow.base.boot.web.EnableWebPath;
 
 @SpringBootApplication(scanBasePackages = "me.smallyellow.hhy", exclude = {DataSourceAutoConfiguration.class})
 @EnableWebPath
+//@EnableAutoConfiguration
 public class Application {
     public static void main( String[] args ) {
         SpringApplication.run(Application.class, args);
