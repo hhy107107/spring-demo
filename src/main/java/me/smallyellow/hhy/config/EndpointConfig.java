@@ -24,6 +24,11 @@ public class EndpointConfig {
 	@Bean  
 	public ServerEndpointExporter endpointExporter() {  
 		return new ServerEndpointExporter();  
-	}  
+	} 
+	
+	@Bean  
+	public HttpSessionConfigurator sessionConfigurator() {
+		return new HttpSessionConfigurator();  
+	}
 	   
 }

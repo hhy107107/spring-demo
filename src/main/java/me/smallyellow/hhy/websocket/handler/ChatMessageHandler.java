@@ -1,4 +1,4 @@
-package me.smallyellow.hhy.websocket;
+package me.smallyellow.hhy.websocket.handler;
 
 import javax.websocket.MessageHandler;
 

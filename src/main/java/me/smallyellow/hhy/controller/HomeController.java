@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import me.smallyellow.base.boot.web.WebPathProperties;
 import me.smallyellow.base.boot.web.bean.AjaxResult;
 import me.smallyellow.base.boot.web.bean.VueStaticInfo;
 import me.smallyellow.base.boot.web.bean.VueStaticUtils;
@@ -23,8 +22,7 @@ import me.smallyellow.hhy.service.TestService;
 @Controller
 public class HomeController {
 	
-	@Autowired
-	private WebPathProperties webPathProperties;
+
 	@Autowired 
 	private TestService testService;
 	

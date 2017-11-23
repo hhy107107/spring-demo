@@ -5,8 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import me.smallyellow.hhy.config.db.DatabaseContextHolder;
-import me.smallyellow.hhy.config.db.DatabaseType;
 import me.smallyellow.hhy.config.db.OtherDataSource;
 import me.smallyellow.hhy.mapper.AppMapper;
 import me.smallyellow.hhy.mapper.UserInfoMapper;

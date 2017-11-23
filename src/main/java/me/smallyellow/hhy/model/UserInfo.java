@@ -5,7 +5,7 @@ package me.smallyellow.hhy.model;
 
 import javax.persistence.Table;
 import javax.persistence.Column;
-import me.smallyellow.base.boot.mybatis.bean.BaseIntegerEntity;
+import me.smallyellow.base.boot.mybatis.bean.BaseLongEntity;
 
 
 /**
@@ -14,12 +14,12 @@ import me.smallyellow.base.boot.mybatis.bean.BaseIntegerEntity;
  * 作者：系统自动生成
  */
  @Table(name="user_info")
-public class UserInfo extends BaseIntegerEntity {
+public class UserInfo extends BaseLongEntity {
 
 	private static final long serialVersionUID = 1L;
 	/**构造函数**/
 	public UserInfo() {}
-	public UserInfo(Integer id,String username,String password,String usertype,Integer enabled,String realname,String qq,String email,String tel) {
+	public UserInfo(Long id,String username,String password,String usertype,Integer enabled,String realname,String qq,String email,String tel) {
 		this.id=id;
 		this.username=username;
 		this.password=password;
@@ -30,7 +30,7 @@ public class UserInfo extends BaseIntegerEntity {
 		this.email=email;
 		this.tel=tel;
 	}
-	public UserInfo setNotNull(Integer id,String username) {
+	public UserInfo setNotNull(Long id,String username) {
 		this.id=id;
 		this.username=username;
 		return this;
@@ -101,11 +101,6 @@ public class UserInfo extends BaseIntegerEntity {
 	}
 	public void setTel(String tel) {
 		this.tel = tel;
-	}
-	@Override
-	public String toString() {
-		return "UserInfo [username=" + username + ", password=" + password + ", usertype=" + usertype + ", enabled="
-				+ enabled + ", realname=" + realname + ", qq=" + qq + ", email=" + email + ", tel=" + tel + "]";
 	}
 
 }

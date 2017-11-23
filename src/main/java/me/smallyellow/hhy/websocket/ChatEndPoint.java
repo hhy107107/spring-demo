@@ -8,14 +8,20 @@ import javax.servlet.http.HttpSession;
 import javax.websocket.CloseReason;
 import javax.websocket.Endpoint;
 import javax.websocket.EndpointConfig;
+import javax.websocket.MessageHandler;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
+import org.apache.tomcat.websocket.WsSession;
+
 import me.smallyellow.base.boot.web.exception.WebException;
+import me.smallyellow.base.boot.web.session.XHSessionContext;
 import me.smallyellow.base.core.utils.CollectionUtils;
 import me.smallyellow.hhy.config.HttpSessionConfigurator;
 import me.smallyellow.hhy.constant.CommonConst;
 import me.smallyellow.hhy.model.UserInfo;
+import me.smallyellow.hhy.websocket.handler.ChatMessageHandler;
+import me.smallyellow.hhy.websocket.handler.TextMessageHandler;
 
 /**
  * 定义一个端点
@@ -25,7 +31,7 @@ import me.smallyellow.hhy.model.UserInfo;
 @ServerEndpoint(value="/chat", configurator = HttpSessionConfigurator.class)
 public class ChatEndPoint extends Endpoint{
 
-	private static final Map<Integer, Session> sessionMap; //当前连接的用户
+	private static final Map<Long, Session> sessionMap; //当前连接的用户
 	
 	static{
 		sessionMap = new HashMap<>();
@@ -34,9 +40,12 @@ public class ChatEndPoint extends Endpoint{
 	@Override
 	public void onOpen(Session session, EndpointConfig config) {
 		System.out.println("被打开了..");
+		WsSession wsSesstion = (WsSession)session;
 		session.addMessageHandler(new ChatMessageHandler());
-		HttpSession httpSession = (HttpSession) config.getUserProperties().
-				get(HttpSession.class.getName());
+		session.addMessageHandler(new TextMessageHandler());
+		HttpSession httpSession = XHSessionContext.getSession(wsSesstion.getHttpSessionId());
+		/*HttpSession httpSession = (HttpSession) config.getUserProperties().
+				get(HttpSession.class.getName());*/
 		UserInfo userInfo = (UserInfo) httpSession.getAttribute(CommonConst.USER);
 		if(userInfo != null) {
 			sessionMap.put(userInfo.getId(), session);
@@ -83,7 +92,7 @@ public class ChatEndPoint extends Endpoint{
 	 */
 	public void sendMessage(String message) {
 		if(CollectionUtils.isNotEmpty(sessionMap)){
-			for (Map.Entry<Integer, Session> entry : sessionMap.entrySet()) {
+			for (Map.Entry<Long, Session> entry : sessionMap.entrySet()) {
 				Session session = entry.getValue();
 				try {
 					session.getBasicRemote().sendText(message);
