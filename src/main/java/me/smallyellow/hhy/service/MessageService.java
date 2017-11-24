@@ -5,9 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import me.smallyellow.base.boot.web.bean.Page;
 import me.smallyellow.base.boot.web.exception.WebException;
 import me.smallyellow.hhy.mapper.MessageMapper;
 import me.smallyellow.hhy.model.Message;
+import tk.mybatis.mapper.entity.Example;
 
 /**
  * 聊天消息
@@ -20,9 +22,19 @@ public class MessageService {
 	@Autowired
 	private MessageMapper messageMapper;
 	
-	public List<Message> listMessage() {
+	/**
+	 * 获取聊天消息
+	 * @param to 发送给谁的消息
+	 * @param from 谁发送的消息
+	 * @param lastId 最近一条消息编号[0表示获取最新消息
+	 * @param size 消息条数[可选]
+	 * @return
+	 */
+	public Page<Message> listMessage(Long userId, Long toId, Long fromId, Long lastId, Integer size) {
 		List<Message> list = messageMapper.selectAll();
-		return list;
+		Page<Message> page = new Page<>();
+		page.setList(list);
+		return page;
 	}
 	
 	/**

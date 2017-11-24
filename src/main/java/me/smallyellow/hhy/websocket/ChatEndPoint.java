@@ -13,6 +13,7 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 import org.apache.tomcat.websocket.WsSession;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import me.smallyellow.base.boot.web.exception.WebException;
 import me.smallyellow.base.boot.web.session.XHSessionContext;
@@ -20,6 +21,7 @@ import me.smallyellow.base.core.utils.CollectionUtils;
 import me.smallyellow.hhy.config.HttpSessionConfigurator;
 import me.smallyellow.hhy.constant.CommonConst;
 import me.smallyellow.hhy.model.UserInfo;
+import me.smallyellow.hhy.service.MessageService;
 import me.smallyellow.hhy.websocket.handler.ChatMessageHandler;
 import me.smallyellow.hhy.websocket.handler.TextMessageHandler;
 
@@ -31,6 +33,9 @@ import me.smallyellow.hhy.websocket.handler.TextMessageHandler;
 @ServerEndpoint(value="/chat", configurator = HttpSessionConfigurator.class)
 public class ChatEndPoint extends Endpoint{
 
+	@Autowired
+	private MessageService messageService;
+	
 	private static final Map<Long, Session> sessionMap; //当前连接的用户
 	
 	static{
@@ -41,8 +46,7 @@ public class ChatEndPoint extends Endpoint{
 	public void onOpen(Session session, EndpointConfig config) {
 		System.out.println("被打开了..");
 		WsSession wsSesstion = (WsSession)session;
-		session.addMessageHandler(new ChatMessageHandler());
-		session.addMessageHandler(new TextMessageHandler());
+		session.addMessageHandler(new ChatMessageHandler(messageService, this));
 		HttpSession httpSession = XHSessionContext.getSession(wsSesstion.getHttpSessionId());
 		/*HttpSession httpSession = (HttpSession) config.getUserProperties().
 				get(HttpSession.class.getName());*/
@@ -63,6 +67,7 @@ public class ChatEndPoint extends Endpoint{
 	@Override
 	public void onError(Session session, Throwable throwable) {
 		super.onError(session, throwable);
+		throwable.printStackTrace();
 		System.out.println("发生了错误..");
 	}
 	
@@ -71,7 +76,7 @@ public class ChatEndPoint extends Endpoint{
 	 * @param userId 指定用户id
 	 * @param message 消息内容
 	 */
-	public void sendMessage(Integer userId, String message) {
+	public void sendMessage(Long userId, String message) {
 		Session session = sessionMap.get(userId);
 		if(session != null) {
 			//可以发送消息

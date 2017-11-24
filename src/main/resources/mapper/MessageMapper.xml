@@ -1,5 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="me.smallyellow.hhy.mapper.MessageMapper">
+	<resultMap id="BaseMessageMap" type="me.smallyellow.hhy.model.Message">
+		<result column="id" property="id" />
+		<result column="user_to" property="userTo" />
+		<result column="user_from" property="userFrom" />
+		<result column="type" property="type" />
+		<result column="message" property="message" />
+		<result column="send_time" property="sendTime" />
+	</resultMap>
+	
+	<sql id="table_column"> id,user_to,user_from,type,message,send_time </sql>
+	
+	<!-- 查询聊天记录 -->
+	<select id="selectMessage" resultMap="BaseMessageMap">
+		SELECT <include refid="table_column" /> FROM message
+		WHERE type = 1 AND user_to = #{userTo} AND user_from = #{userFrom}
+		AND id <![CDATA[ > ]]> #{lastId} 
+		ORDER BY id DESC
+		<if test="size != null">
+			LIMIT 0,#{size} 
+		</if>
+		<if test="size == null">
+			LIMIT 0,20 
+		</if>
+	</select>
 
 </mapper>

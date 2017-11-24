@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import me.smallyellow.base.boot.web.bean.AjaxResult;
 import me.smallyellow.base.boot.web.bean.VueStaticInfo;
 import me.smallyellow.base.boot.web.bean.VueStaticUtils;
+import me.smallyellow.hhy.constant.CommonConst;
 import me.smallyellow.hhy.model.App;
 import me.smallyellow.hhy.model.UserInfo;
 import me.smallyellow.hhy.service.TestService;
@@ -45,6 +46,27 @@ public class HomeController {
 		}
 		model.addAttribute("vue", vue);
 		return "index";
+	}
+	
+	/**
+	 * 获取当前登录用户信息
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/initData", method = RequestMethod.GET)
+	@ResponseBody
+	public AjaxResult initData(HttpServletRequest request, HttpServletResponse response, Model model){
+		AjaxResult result = new AjaxResult();
+		UserInfo user = (UserInfo) request.getSession().getAttribute(CommonConst.USER);
+		if (user != null) {
+			result.setCode(AjaxResult.SUCCESS);
+			result.setResult(user);
+		} else {
+			result.setCode(AjaxResult.UN_LOGIN);
+		}
+		return result;
 	}
 	
 	@RequestMapping(value = "/ws", method = RequestMethod.GET)

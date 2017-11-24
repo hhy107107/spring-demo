@@ -7,6 +7,7 @@ import javax.persistence.Table;
 import javax.persistence.Column;
 import me.smallyellow.base.boot.mybatis.bean.BaseLongEntity;
 
+import java.util.Date;
 
 /**
  * 名称：
@@ -19,18 +20,20 @@ public class Message extends BaseLongEntity {
 	private static final long serialVersionUID = 1L;
 	/**构造函数**/
 	public Message() {}
-	public Message(Long id,Long userTo,Long userFrom,Short type,String message) {
+	public Message(Long id,Long userTo,Long userFrom,Short type,String message,Date sendTime) {
 		this.id=id;
 		this.userTo=userTo;
 		this.userFrom=userFrom;
 		this.type=type;
 		this.message=message;
+		this.sendTime=sendTime;
 	}
-	public Message setNotNull(Long id,Long userTo,Long userFrom,Short type) {
+	public Message setNotNull(Long id,Long userTo,Long userFrom,Short type,Date sendTime) {
 		this.id=id;
 		this.userTo=userTo;
 		this.userFrom=userFrom;
 		this.type=type;
+		this.sendTime=sendTime;
 		return this;
 	}
 	/**属性**/
@@ -42,6 +45,8 @@ public class Message extends BaseLongEntity {
 	private Short type;// 类型（非空） 
 	@Column(name = "message")
 	private String message;// 消息内容
+	@Column(name = "send_time")
+	private Date sendTime;// 发送时间（非空） 
 
 	/**属性Get、Set函数**/
 	public Long getUserTo() {
@@ -67,6 +72,12 @@ public class Message extends BaseLongEntity {
 	}
 	public void setMessage(String message) {
 		this.message = message;
+	}
+	public Date getSendTime() {
+		return sendTime;
+	}
+	public void setSendTime(Date sendTime) {
+		this.sendTime = sendTime;
 	}
 
 }

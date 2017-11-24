@@ -3,6 +3,10 @@
  */
 package me.smallyellow.hhy.mapper;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import me.smallyellow.base.boot.mybatis.bean.MyMapper;
 import me.smallyellow.hhy.model.Message;
 
@@ -13,4 +17,13 @@ import me.smallyellow.hhy.model.Message;
  */
 public interface MessageMapper extends MyMapper<Message> {
 	
+	/**
+	 * 查询聊天记录
+	 * @param toId 给谁发的
+	 * @param fromId 谁接收的
+	 * @param lastId 最近的聊天记录编号
+	 * @return
+	 */
+	public List<Message> selectMessage(@Param("toId") Long toId, @Param("fromId") Long fromId, 
+			@Param("lastId") Long lastId);
 }
