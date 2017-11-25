@@ -26,4 +26,14 @@ public class JSONUtils {
 		}
         return bean;
 	}
+	
+	/**
+	 * bean to json string
+	 * @param bean
+	 * @return
+	 */
+	public static String toJSON(Object bean) {
+		Gson gson = new Gson();
+		return gson.toJson(bean);
+	}
 }

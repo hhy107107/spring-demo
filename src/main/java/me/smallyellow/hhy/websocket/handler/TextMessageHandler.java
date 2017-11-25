@@ -26,7 +26,7 @@ public class TextMessageHandler implements MessageHandler.Whole<TextMessageBean>
 		System.out.println("收到了消息：" + message);
 		//保存聊天记录
 		Message msg = new Message();
-		msg.setNotNull(null, message.getTo(), message.getFrom(), message.getType().getValue(), new Date());
+		msg.setNotNull(null, message.getTo(), message.getFrom(), message.getType().getValue(), new Date(), msg.getStatus());
 		try{
 			messageService.insertMessage(msg);
 		} catch (WebException e){

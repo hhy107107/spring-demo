@@ -8,7 +8,6 @@ import javax.servlet.http.HttpSession;
 import javax.websocket.CloseReason;
 import javax.websocket.Endpoint;
 import javax.websocket.EndpointConfig;
-import javax.websocket.MessageHandler;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
@@ -23,7 +22,6 @@ import me.smallyellow.hhy.constant.CommonConst;
 import me.smallyellow.hhy.model.UserInfo;
 import me.smallyellow.hhy.service.MessageService;
 import me.smallyellow.hhy.websocket.handler.ChatMessageHandler;
-import me.smallyellow.hhy.websocket.handler.TextMessageHandler;
 
 /**
  * 定义一个端点
@@ -76,16 +74,12 @@ public class ChatEndPoint extends Endpoint{
 	 * @param userId 指定用户id
 	 * @param message 消息内容
 	 */
-	public void sendMessage(Long userId, String message) {
+	public void sendMessage(Long userId, String message) throws IOException, WebException{
 		Session session = sessionMap.get(userId);
 		if(session != null) {
 			//可以发送消息
-			try {
-				session.getBasicRemote().sendText(message);
-				System.out.println("发送了消息：" + message);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			session.getBasicRemote().sendText(message); //抛出 IOException
+			System.out.println("发送了消息：" + message);
 		} else {
 			throw new WebException("暂不支持离线消息");
 		}

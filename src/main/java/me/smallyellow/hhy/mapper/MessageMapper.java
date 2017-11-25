@@ -25,5 +25,5 @@ public interface MessageMapper extends MyMapper<Message> {
 	 * @return
 	 */
 	public List<Message> selectMessage(@Param("toId") Long toId, @Param("fromId") Long fromId, 
-			@Param("lastId") Long lastId);
+			@Param("lastId") Long lastId, @Param("size") Integer size);
 }

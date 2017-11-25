@@ -37,7 +37,14 @@ abstract public class MessageBean implements Serializable{
 	protected Long to; //消息发送给谁
 	protected Long from; //消息来自谁
 	protected TYPE type; //消息类型
+	protected Short status; //消息状态
 	
+	public Short getStatus() {
+		return status;
+	}
+	public void setStatus(Short status) {
+		this.status = status;
+	}
 	public Long getTo() {
 		return to;
 	}

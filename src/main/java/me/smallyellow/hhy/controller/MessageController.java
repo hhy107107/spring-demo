@@ -39,12 +39,12 @@ public class MessageController {
 	public AjaxResult getList(HttpServletRequest request,
 			@RequestParam("to") Long to,
 			@RequestParam("from") Long from,
-			@RequestParam("lastId") Long lastId,
+			@RequestParam(value = "lastId", required = false) Long lastId,
 			@RequestParam(value = "size", required = false) Integer size) {
 		AjaxResult result = new AjaxResult();
 		try{
 			UserInfo user = (UserInfo) request.getSession().getAttribute(CommonConst.USER);
-			Page<Message> list = messageService.listMessage(user.getId(), to, from, lastId, size);
+			List<Message> list = messageService.listMessage(user.getId(), to, from, lastId, size);
 			result.setResult(list);
 			result.setCode(AjaxResult.SUCCESS);
 		} catch (WebException e) {

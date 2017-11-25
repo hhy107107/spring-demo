@@ -20,20 +20,22 @@ public class Message extends BaseLongEntity {
 	private static final long serialVersionUID = 1L;
 	/**构造函数**/
 	public Message() {}
-	public Message(Long id,Long userTo,Long userFrom,Short type,String message,Date sendTime) {
+	public Message(Long id,Long userTo,Long userFrom,Short type,String message,Date sendTime,Short status) {
 		this.id=id;
 		this.userTo=userTo;
 		this.userFrom=userFrom;
 		this.type=type;
 		this.message=message;
 		this.sendTime=sendTime;
+		this.status=status;
 	}
-	public Message setNotNull(Long id,Long userTo,Long userFrom,Short type,Date sendTime) {
+	public Message setNotNull(Long id,Long userTo,Long userFrom,Short type,Date sendTime,Short status) {
 		this.id=id;
 		this.userTo=userTo;
 		this.userFrom=userFrom;
 		this.type=type;
 		this.sendTime=sendTime;
+		this.status=status;
 		return this;
 	}
 	/**属性**/
@@ -47,6 +49,8 @@ public class Message extends BaseLongEntity {
 	private String message;// 消息内容
 	@Column(name = "send_time")
 	private Date sendTime;// 发送时间（非空） 
+	@Column(name = "status")
+	private Short status;// 消息发送状态 1-成功发送并接收; 2-成功发送但接收失败; 3-发送失败（非空） 
 
 	/**属性Get、Set函数**/
 	public Long getUserTo() {
@@ -78,6 +82,12 @@ public class Message extends BaseLongEntity {
 	}
 	public void setSendTime(Date sendTime) {
 		this.sendTime = sendTime;
+	}
+	public Short getStatus() {
+		return status;
+	}
+	public void setStatus(Short status) {
+		this.status = status;
 	}
 
 }
