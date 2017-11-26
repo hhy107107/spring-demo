@@ -72,4 +72,23 @@ public class NoteTypeController {
 		}
 		return result;
 	}
+	
+	@RequestMapping(value = "/note/typeDel", method = RequestMethod.POST)
+	@ResponseBody
+	public AjaxResult typeDel(HttpServletRequest request,
+			@RequestParam("id") Long id){
+		AjaxResult result = new AjaxResult();
+		UserInfo user = (UserInfo) request.getSession().getAttribute(CommonConst.USER);
+		NoteType noteType = new NoteType();
+		noteType.setNotNull(null, name, user.getId());
+		noteType.setDescription(description);
+		try {
+			noteTypeService.insertNoteType(noteType);
+			result.setCode(AjaxResult.SUCCESS);
+		} catch (WebException e) {
+			result.setCode(AjaxResult.ERROR);
+			result.setMessage(e.getMessage());
+		}
+		return result;
+	}
 }
