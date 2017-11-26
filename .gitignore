@@ -24,3 +24,4 @@ logs
 .mymetadata
 .DS_Store
 /cloud-data/src/test/java/dev/AutoCode.java
+/.apt_generated/

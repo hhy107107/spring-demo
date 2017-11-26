@@ -19,6 +19,11 @@ import me.smallyellow.hhy.model.Message;
 import me.smallyellow.hhy.model.UserInfo;
 import me.smallyellow.hhy.service.MessageService;
 
+/**
+ * 消息控制层
+ * @author hhy
+ * 2017年11月24日
+ */
 @Controller
 public class MessageController {
 
