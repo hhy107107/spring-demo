@@ -73,17 +73,20 @@ public class NoteTypeController {
 		return result;
 	}
 	
+	/**
+	 * 删除笔记类型
+	 * @param request
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping(value = "/note/typeDel", method = RequestMethod.POST)
 	@ResponseBody
 	public AjaxResult typeDel(HttpServletRequest request,
 			@RequestParam("id") Long id){
 		AjaxResult result = new AjaxResult();
 		UserInfo user = (UserInfo) request.getSession().getAttribute(CommonConst.USER);
-		NoteType noteType = new NoteType();
-		noteType.setNotNull(null, name, user.getId());
-		noteType.setDescription(description);
 		try {
-			noteTypeService.insertNoteType(noteType);
+			noteTypeService.deleteNoteType(user.getId(), id);
 			result.setCode(AjaxResult.SUCCESS);
 		} catch (WebException e) {
 			result.setCode(AjaxResult.ERROR);

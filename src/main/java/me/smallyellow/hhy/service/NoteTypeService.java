@@ -50,11 +50,13 @@ public class NoteTypeService {
 	 * @param noteType
 	 * @throws WebException
 	 */
-	public void deleteNoteType(Long id) throws WebException{
-		/*Example example = new Example()
-		int result = noteTypeMapper.deleteByPrimaryKey(id);
+	public void deleteNoteType(Long userId, Long id) throws WebException{
+		Example example = new Example(NoteType.class);
+		example.createCriteria().andEqualTo("userId", userId)
+		.andEqualTo("id", id);
+		int result = noteTypeMapper.deleteByExample(example);
 		if (result <= 0) {
 			throw new WebException("删除失败");
-		}*/
+		}
 	}
 }

@@ -1,5 +1,55 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="me.smallyellow.hhy.mapper.NoteMapper">
-
+	<resultMap id="BaseNoteMap" type="me.smallyellow.hhy.model.Note">
+		<result column="id" property="id" />
+		<result column="type_id" property="typeId" />
+		<result column="author" property="author" />
+		<result column="user_id" property="userId" />
+		<result column="content" property="content" />
+		<result column="title" property="title" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="heart" property="heart" />
+		<result column="status" property="status" />
+	</resultMap>
+	
+	<resultMap id="NoteDtoMap" type="me.smallyellow.hhy.model.dto.NoteDTO">
+		<result column="id" property="id" />
+		<result column="type_id" property="typeId" />
+		<result column="author" property="author" />
+		<result column="user_id" property="userId" />
+		<result column="content" property="content" />
+		<result column="title" property="title" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="heart" property="heart" />
+		<result column="status" property="status" />
+		<result column="type_name" property="typeName" />
+	</resultMap>
+	
+	<sql id="table_column"> id,type_id,author,user_id,content,title,create_time,update_time,heart,status </sql>
+	
+	<sql id="and_type_id">
+		<if test="typeId != null">
+			AND type_id = #{typeId}
+		</if>
+	</sql>
+	<!-- 分页查询文章列表 -->
+	<select id="selectNoteList" resultMap="BaseNoteMap">
+		SELECT <include refid="table_column" /> FROM note
+		WHERE user_id = #{userId} 
+		<include refid="and_type_id" />
+		LIMIT #{pageNo},#{pageSize}
+	</select>
+	<!-- 用户文章数量 -->
+	<select id="selectNoteCount" resultType="java.lang.Integer">
+		SELECT COUNT(id) 
+		FROM note WHERE user_id = #{userId}
+		<include refid="and_type_id" />
+	</select>
+	<!-- 文章详情，扩展了类型名称 -->
+	<select id="selectNoteDetail" resultMap="NoteDtoMap">
+	
+	</select>
 </mapper>
