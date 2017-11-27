@@ -18,6 +18,7 @@ import me.smallyellow.base.boot.web.bean.Page;
 import me.smallyellow.hhy.constant.CommonConst;
 import me.smallyellow.hhy.model.Note;
 import me.smallyellow.hhy.model.UserInfo;
+import me.smallyellow.hhy.model.dto.NoteDTO;
 import me.smallyellow.hhy.service.NoteService;
 
 /**
@@ -72,7 +73,7 @@ public class NoteController {
 		AjaxResult result = new AjaxResult();
 		try {
 			UserInfo user = (UserInfo) request.getSession().getAttribute(CommonConst.USER);
-			Note list = noteService.selectNoteDetail(user.getId(), id);
+			NoteDTO list = noteService.selectNoteDetail(user.getId(), id);
 			result.setCode(AjaxResult.SUCCESS);
 			result.setResult(list);
 		} catch (Exception e){
