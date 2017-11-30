@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Param;
 
 import me.smallyellow.base.boot.mybatis.bean.MyMapper;
 import me.smallyellow.hhy.model.Note;
+import me.smallyellow.hhy.model.dto.NoteDTO;
 
 /**
  * 名称：
@@ -35,5 +36,13 @@ public interface NoteMapper extends MyMapper<Note> {
 	 * @return
 	 */
 	public Integer selectNoteCount(@Param("typeId") Long typeId, @Param("userId") Long userId);
+	
+	/**
+	 * 文章详情
+	 * @param id 文章id
+	 * @param userId 用户id
+	 * @return
+	 */
+	public NoteDTO selectNoteDetail(@Param("id") Long id, @Param("userId") Long userId);
 	
 }

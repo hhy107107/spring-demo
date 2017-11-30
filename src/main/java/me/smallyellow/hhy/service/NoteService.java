@@ -10,6 +10,7 @@ import me.smallyellow.base.boot.web.exception.WebException;
 import me.smallyellow.hhy.constant.CommonConst;
 import me.smallyellow.hhy.mapper.NoteMapper;
 import me.smallyellow.hhy.model.Note;
+import me.smallyellow.hhy.model.dto.NoteDTO;
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.entity.Example.Criteria;
 
@@ -70,10 +71,8 @@ public class NoteService {
 	 * @param id
 	 * @return
 	 */
-	public Note selectNoteDetail(Long userId, Long id) {
-		Note record = new Note();
-		record.setNotNull(id, null, null, userId, null, null);
-		record = noteMapper.selectOne(record);
+	public NoteDTO selectNoteDetail(Long userId, Long id) {
+		NoteDTO record = noteMapper.selectNoteDetail(id, userId);
 		return record;
 	}
 

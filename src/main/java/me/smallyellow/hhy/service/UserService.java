@@ -45,11 +45,36 @@ public class UserService {
 	 * @param info
 	 * @throws WebException
 	 */
-	public void insertUser(UserInfo info) throws WebException{
+	public void insertUser(UserInfo info) throws WebException {
 		int result = userInfoMapper.insert(info);
-		if(result <= 0) {
+		if (result <= 0) {
 			throw new WebException("插入失败");
 		}
 	}
 	
+	/**
+	 * 修改用户
+	 * @param info
+	 * @throws WebException
+	 */
+	public void updateUser(UserInfo info) throws WebException {
+		int result = userInfoMapper.updateByPrimaryKeySelective(info);
+		if (result <= 0) {
+			throw new WebException("修改失败");
+		}
+	}
+	
+	/**
+	 * 获取用户
+	 * @param id
+	 * @return
+	 * @throws WebException
+	 */
+	public UserInfo getUser(Long id) throws WebException {
+		UserInfo user = userInfoMapper.selectByPrimaryKey(id);
+		if (user == null) {
+			throw new WebException("用户不存在");
+		}
+		return user;
+	}
 }

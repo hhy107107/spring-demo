@@ -124,6 +124,7 @@ public class DateUtils {
 	 * @return
 	 */
 	public static Date stringToDate(String date, int df){
+		if(date != null)
 		try {
 			switch (df) {
 			case 1:
@@ -148,6 +149,7 @@ public class DateUtils {
 		} catch (ParseException e) {
 			return null;
 		}
+		return null;
 	}
 	
 	/**

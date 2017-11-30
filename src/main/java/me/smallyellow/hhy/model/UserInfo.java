@@ -7,6 +7,7 @@ import javax.persistence.Table;
 import javax.persistence.Column;
 import me.smallyellow.base.boot.mybatis.bean.BaseLongEntity;
 
+import java.util.Date;
 
 /**
  * 名称：
@@ -19,23 +20,29 @@ public class UserInfo extends BaseLongEntity {
 	private static final long serialVersionUID = 1L;
 	/**构造函数**/
 	public UserInfo() {}
-	public UserInfo(Long id,String username,String password,String name,String usertype,Integer enabled,String realname,String qq,String email,String tel) {
+	public UserInfo(Long id,String username,String password,String name,String usertype,Integer enabled,String qq,String email,String tel,Short sex,String signature,String address,Date birthday,Short reason,String userface) {
 		this.id=id;
 		this.username=username;
 		this.password=password;
 		this.name=name;
 		this.usertype=usertype;
 		this.enabled=enabled;
-		this.realname=realname;
 		this.qq=qq;
 		this.email=email;
 		this.tel=tel;
+		this.sex=sex;
+		this.signature=signature;
+		this.address=address;
+		this.birthday=birthday;
+		this.reason=reason;
+		this.userface=userface;
 	}
-	public UserInfo setNotNull(Long id,String username,String password,String name) {
+	public UserInfo setNotNull(Long id,String username,String password,String name,Short reason) {
 		this.id=id;
 		this.username=username;
 		this.password=password;
 		this.name=name;
+		this.reason=reason;
 		return this;
 	}
 	/**属性**/
@@ -46,17 +53,27 @@ public class UserInfo extends BaseLongEntity {
 	@Column(name = "name")
 	private String name;// 用户名字（非空） 
 	@Column(name = "usertype")
-	private String usertype;// 用户类型
+	private String usertype;// 用户类型 1-普通用户 2-管理员
 	@Column(name = "enabled")
 	private Integer enabled;// 是否可用
-	@Column(name = "realname")
-	private String realname;// 真实姓名
 	@Column(name = "qq")
 	private String qq;// QQ
 	@Column(name = "email")
-	private String email;// 
+	private String email;// 邮箱
 	@Column(name = "tel")
 	private String tel;// 联系电话
+	@Column(name = "sex")
+	private Short sex;// 性别 1-男 2-女
+	@Column(name = "signature")
+	private String signature;// 个性签名
+	@Column(name = "address")
+	private String address;// 地址
+	@Column(name = "birthday")
+	private Date birthday;// 
+	@Column(name = "reason")
+	private Short reason;// 来到小黄平台的原因 1-崇拜小黄 2-崇拜统子 3-想了解bjhj 4-被小黄无形之中的气质所吸引（非空） 
+	@Column(name = "userface")
+	private String userface;// 头像
 
 	/**属性Get、Set函数**/
 	public String getUsername() {
@@ -89,12 +106,6 @@ public class UserInfo extends BaseLongEntity {
 	public void setEnabled(Integer enabled) {
 		this.enabled = enabled;
 	}
-	public String getRealname() {
-		return realname;
-	}
-	public void setRealname(String realname) {
-		this.realname = realname;
-	}
 	public String getQq() {
 		return qq;
 	}
@@ -112,6 +123,42 @@ public class UserInfo extends BaseLongEntity {
 	}
 	public void setTel(String tel) {
 		this.tel = tel;
+	}
+	public Short getSex() {
+		return sex;
+	}
+	public void setSex(Short sex) {
+		this.sex = sex;
+	}
+	public String getSignature() {
+		return signature;
+	}
+	public void setSignature(String signature) {
+		this.signature = signature;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public Date getBirthday() {
+		return birthday;
+	}
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
+	public Short getReason() {
+		return reason;
+	}
+	public void setReason(Short reason) {
+		this.reason = reason;
+	}
+	public String getUserface() {
+		return userface;
+	}
+	public void setUserface(String userface) {
+		this.userface = userface;
 	}
 
 }

@@ -19,6 +19,7 @@ import me.smallyellow.hhy.constant.CommonConst;
 import me.smallyellow.hhy.model.App;
 import me.smallyellow.hhy.model.UserInfo;
 import me.smallyellow.hhy.service.TestService;
+import me.smallyellow.hhy.service.UserService;
 
 @Controller
 public class HomeController {
@@ -26,6 +27,9 @@ public class HomeController {
 
 	@Autowired 
 	private TestService testService;
+	
+	@Autowired
+	private UserService userService;
 	
 	private final static VueStaticInfo vue = new VueStaticInfo();
 	
@@ -61,8 +65,9 @@ public class HomeController {
 		AjaxResult result = new AjaxResult();
 		UserInfo user = (UserInfo) request.getSession().getAttribute(CommonConst.USER);
 		if (user != null) {
+			UserInfo info = userService.getUser(user.getId());
 			result.setCode(AjaxResult.SUCCESS);
-			result.setResult(user);
+			result.setResult(info);
 		} else {
 			result.setCode(AjaxResult.UN_LOGIN);
 		}
