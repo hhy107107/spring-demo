@@ -3,8 +3,11 @@
  */
 package me.smallyellow.hhy.mapper;
 
+import org.apache.ibatis.annotations.Param;
+
 import me.smallyellow.base.boot.mybatis.bean.MyMapper;
 import me.smallyellow.hhy.model.UserInfo;
+import me.smallyellow.hhy.model.dto.UserInfoDTO;
 
 /**
  * 名称：
@@ -13,4 +16,10 @@ import me.smallyellow.hhy.model.UserInfo;
  */
 public interface UserInfoMapper extends MyMapper<UserInfo> {
 	
+	/**
+	 * 获取用户信息，包括博客等级
+	 * @param id
+	 * @return
+	 */
+	UserInfoDTO selectUserInfoWithGrade(@Param("id") Long id);
 }

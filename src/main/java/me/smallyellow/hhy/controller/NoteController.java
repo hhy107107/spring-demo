@@ -96,15 +96,18 @@ public class NoteController {
 	public AjaxResult addNote(HttpServletRequest request,
 			@RequestParam("typeId") Long typeId,
 			@RequestParam("title") String title,
+			@RequestParam("isMarkdown") Short isMarkdown,
 			@RequestParam(value = "content", required = false) String content) {
 		AjaxResult result = new AjaxResult();
 		try {
 			UserInfo user = (UserInfo) request.getSession().getAttribute(CommonConst.USER);
 			Note note = new Note();
-			note.setNotNull(null, typeId, user.getName(), user.getId(), title, new Date());
+			note.setNotNull(null, typeId, user.getName(), user.getId(), title, new Date(), isMarkdown);
+			note.setContent(content);
 			noteService.insertNote(note);
 			result.setCode(AjaxResult.SUCCESS);
 		} catch (Exception e){
+			e.printStackTrace();
 			result.setCode(AjaxResult.ERROR);
 			result.setMessage(e.getMessage());
 		}

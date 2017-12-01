@@ -92,4 +92,29 @@ public class UserController {
 		return result;
 	}
 	
+	/**
+	 * 修改用户密码
+	 * @param request
+	 * @param newPwd
+	 * @param oldPwd
+	 * @return
+	 */
+	@RequestMapping(value = "/user/changeUserPwd", method = RequestMethod.POST)
+	@ResponseBody
+	public AjaxResult changeUserPwd(HttpServletRequest request,
+			@RequestParam(value = "newPwd", required = false) String newPwd,
+			@RequestParam(value = "oldPwd", required = false) String oldPwd){
+		AjaxResult result = new AjaxResult();
+		try{
+			UserInfo user = (UserInfo) request.getSession().getAttribute(CommonConst.USER);
+			UserInfo info = new UserInfo();
+			info.setNotNull(user.getId(), null, newPwd, null, null);
+			userService.updateUserPwd(info, oldPwd);
+			result.setCode(AjaxResult.SUCCESS);
+		} catch (WebException e){
+			result.setCode(AjaxResult.ERROR);
+			result.setMessage(e.getMessage());
+		}
+		return result;
+	}
 }

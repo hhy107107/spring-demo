@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import me.smallyellow.base.boot.web.bean.AjaxResult;
@@ -18,6 +19,7 @@ import me.smallyellow.base.boot.web.bean.VueStaticUtils;
 import me.smallyellow.hhy.constant.CommonConst;
 import me.smallyellow.hhy.model.App;
 import me.smallyellow.hhy.model.UserInfo;
+import me.smallyellow.hhy.model.dto.UserInfoDTO;
 import me.smallyellow.hhy.service.TestService;
 import me.smallyellow.hhy.service.UserService;
 
@@ -57,17 +59,24 @@ public class HomeController {
 	 * @param request
 	 * @param response
 	 * @param model
+	 * @param needNoteGrade 是否需要返回博客等级
 	 * @return
 	 */
 	@RequestMapping(value = "/initData", method = RequestMethod.GET)
 	@ResponseBody
-	public AjaxResult initData(HttpServletRequest request, HttpServletResponse response, Model model){
+	public AjaxResult initData(HttpServletRequest request, HttpServletResponse response, Model model,
+			@RequestParam(value = "needNoteGrade", required = false) Boolean needNoteGrade){
 		AjaxResult result = new AjaxResult();
 		UserInfo user = (UserInfo) request.getSession().getAttribute(CommonConst.USER);
 		if (user != null) {
-			UserInfo info = userService.getUser(user.getId());
+			if (needNoteGrade == null) {
+				UserInfo info = userService.getUser(user.getId());
+				result.setResult(info);
+			} else {
+				UserInfoDTO info = userService.getUserWithGrade(user.getId());
+				result.setResult(info);
+			}
 			result.setCode(AjaxResult.SUCCESS);
-			result.setResult(info);
 		} else {
 			result.setCode(AjaxResult.UN_LOGIN);
 		}

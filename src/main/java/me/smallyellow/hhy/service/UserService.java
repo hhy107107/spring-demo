@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import me.smallyellow.base.boot.web.exception.WebException;
 import me.smallyellow.hhy.mapper.UserInfoMapper;
 import me.smallyellow.hhy.model.UserInfo;
+import me.smallyellow.hhy.model.dto.UserInfoDTO;
 
 /**
  * 用户相关
@@ -41,6 +42,30 @@ public class UserService {
 	}
 	
 	/**
+	 * 获取用户
+	 * @param id
+	 * @return
+	 * @throws WebException
+	 */
+	public UserInfo getUser(Long id) throws WebException {
+		UserInfo user = userInfoMapper.selectByPrimaryKey(id);
+		if (user == null) {
+			throw new WebException("用户不存在");
+		}
+		return user;
+	}
+	
+	/**
+	 * 获取用户，加上等级
+	 * @param id
+	 * @return
+	 */
+	public UserInfoDTO getUserWithGrade(Long id) {
+		UserInfoDTO dto = userInfoMapper.selectUserInfoWithGrade(id);
+		return dto;
+	}
+	
+	/**
 	 * 插入用户
 	 * @param info
 	 * @throws WebException
@@ -65,16 +90,19 @@ public class UserService {
 	}
 	
 	/**
-	 * 获取用户
-	 * @param id
-	 * @return
-	 * @throws WebException
+	 * 修改用户密码
+	 * @param info 用户（新密码
+	 * @param oldPwd 旧密码
 	 */
-	public UserInfo getUser(Long id) throws WebException {
-		UserInfo user = userInfoMapper.selectByPrimaryKey(id);
-		if (user == null) {
-			throw new WebException("用户不存在");
+	public void updateUserPwd(UserInfo info, String oldPwd) throws WebException {
+		if (info.getPassword().equals(oldPwd)) {
+			int result = userInfoMapper.updateByPrimaryKeySelective(info);
+			if (result <= 0) {
+				throw new WebException("修改密码失败");
+			}
+		} else {
+			throw new WebException("两次密码不一致");
 		}
-		return user;
 	}
+
 }

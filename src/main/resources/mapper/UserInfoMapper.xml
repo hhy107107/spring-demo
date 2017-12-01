@@ -2,4 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="me.smallyellow.hhy.mapper.UserInfoMapper">
 
+	<resultMap id="BaseUserInfoDTOMap" type="me.smallyellow.hhy.model.dto.UserInfoDTO">
+		<result column="id" property="id"/>
+		<result column="username" property="username"/>
+		<result column="name" property="name"/>
+		<result column="usertype" property="usertype"/>
+		<result column="enabled" property="enabled"/>
+		<result column="qq" property="qq"/>
+		<result column="email" property="email"/>
+		<result column="tel" property="tel"/>
+		<result column="sex" property="sex"/>
+		<result column="signature" property="signature"/>
+		<result column="address" property="address"/>
+		<result column="birthday" property="birthday"/>
+		<result column="reason" property="reason"/>
+		<result column="userface" property="userface"/>
+		<result column="grade_name" property="noteGradeName"/>
+	</resultMap>
+	
+	<select id="selectUserInfoWithGrade" resultMap="BaseUserInfoDTOMap">
+		SELECT ui.id, ui.username, ui.`name`,ui.usertype,ui.enabled,ui.qq,
+		ui.email,ui.tel,ui.sex,ui.signature,ui.address,ui.birthday,
+		ui.reason,ui.userface, ng.`name` grade_name 
+		FROM user_info ui
+		LEFT JOIN note_user_grade nug ON nug.user_id = ui.id
+		LEFT JOIN note_grade ng ON ng.id = nug.grade_id
+		WHERE ui.id = #{id}
+	</select>
 </mapper>

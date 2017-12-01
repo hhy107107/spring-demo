@@ -7,9 +7,14 @@ import org.springframework.stereotype.Service;
 
 import me.smallyellow.base.boot.web.bean.Page;
 import me.smallyellow.base.boot.web.exception.WebException;
+import me.smallyellow.base.core.utils.CollectionUtils;
 import me.smallyellow.hhy.constant.CommonConst;
+import me.smallyellow.hhy.mapper.NoteGradeMapper;
 import me.smallyellow.hhy.mapper.NoteMapper;
+import me.smallyellow.hhy.mapper.NoteUserGradeMapper;
 import me.smallyellow.hhy.model.Note;
+import me.smallyellow.hhy.model.NoteGrade;
+import me.smallyellow.hhy.model.NoteUserGrade;
 import me.smallyellow.hhy.model.dto.NoteDTO;
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.entity.Example.Criteria;
@@ -25,6 +30,12 @@ public class NoteService {
 	@Autowired
 	private NoteMapper noteMapper;
 	
+	@Autowired
+	private NoteUserGradeMapper noteUserGradeMapper;
+	
+	@Autowired
+	private NoteGradeMapper noteGradeMapper;
+	
 	/**
 	 * 新增文章
 	 * @param note
@@ -32,10 +43,13 @@ public class NoteService {
 	 */
 	public void insertNote(Note note) throws WebException{
 		int result = noteMapper.insert(note);
+		//博客等级修改
+		updateNoteGradeUser(note.getUserId());
 		if (result <= 0) {
 			throw new WebException("增加文章失败");
 		}
 	}
+
 	
 	/**
 	 * 文章列表
@@ -75,5 +89,55 @@ public class NoteService {
 		NoteDTO record = noteMapper.selectNoteDetail(id, userId);
 		return record;
 	}
-
+	
+	/**
+	 * 添加删除文章的时候，要更新用户的博客等级
+	 * @param note
+	 */
+	private void updateNoteGradeUser(Long userId) {
+		int count = noteMapper.selectNoteCount(null, userId);
+		NoteGrade noteGrade = getNoteGradeByNum(count);
+		//是否要更新用户等级
+		NoteUserGrade record = new NoteUserGrade();
+		record.setUserId(userId);
+		NoteUserGrade noteUserGrade = noteUserGradeMapper.selectOne(record);
+		if (noteUserGrade == null) {
+			//之前没有等级，现在给加个等级
+			NoteUserGrade noteUser = new NoteUserGrade();
+			noteUser.setNotNull(null, userId, noteGrade.getId());
+			noteUserGradeMapper.insert(noteUser);
+		} else {
+			noteUserGrade.setGradeId(noteGrade.getId());
+			noteUserGradeMapper.updateByPrimaryKeySelective(noteUserGrade);
+		}
+	}
+	
+	/**
+	 * 获取笔记等级
+	 * @return
+	 */
+	private List<NoteGrade> getNoteGradeList() {
+		Example example = new Example(NoteGrade.class);
+		example.setOrderByClause("grade desc");
+		//example.createCriteria().andCondition("1=1");
+		List<NoteGrade> list = noteGradeMapper.selectByExample(example);
+		return list;
+	}
+	
+	/**
+	 * 根据博客数量获取等级
+	 * @param num
+	 * @return
+	 */
+	private NoteGrade getNoteGradeByNum(int num) {
+		List<NoteGrade> list =  getNoteGradeList();
+		if (CollectionUtils.isNotEmpty(list)) {
+			for (NoteGrade noteGrade : list) {
+				if(noteGrade.getNum() <= num) {
+					return noteGrade;
+				}
+			}
+		}
+		return null;
+	}
 }
