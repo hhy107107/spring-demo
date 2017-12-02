@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2017-12-01 17:54:51
+Date: 2017-12-02 19:27:23
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -72,23 +72,25 @@ CREATE TABLE `note` (
   `heart` int(11) DEFAULT NULL COMMENT '收获了多少喜欢',
   `status` tinyint(4) DEFAULT NULL COMMENT '状态 1-正常 2-草稿 3-回收站',
   `is_mark_down` tinyint(4) NOT NULL COMMENT '1-morkdown 模式  2-普通模式',
+  `zan_num` int(11) DEFAULT NULL COMMENT '赞的数量',
   PRIMARY KEY (`id`),
   KEY `fk_note_type` (`type_id`),
   KEY `fk_note_uid` (`user_id`),
   CONSTRAINT `fk_note_type` FOREIGN KEY (`type_id`) REFERENCES `note_type` (`id`),
   CONSTRAINT `fk_note_uid` FOREIGN KEY (`user_id`) REFERENCES `user_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='笔记';
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COMMENT='笔记';
 
 -- ----------------------------
 -- Records of note
 -- ----------------------------
-INSERT INTO `note` VALUES ('1', '3', '用户3', '3', '内容啊', '标题', '2017-11-27 10:19:38', null, null, null, '0');
-INSERT INTO `note` VALUES ('3', '5', '客服', '0', null, '标题', '2017-12-01 15:34:10', null, null, null, '0');
-INSERT INTO `note` VALUES ('5', '5', '客服', '0', null, '12月的第一天', '2017-12-01 16:47:24', null, null, null, '0');
-INSERT INTO `note` VALUES ('14', '4', '小黄人', '3', null, '标题fsdaef', '2017-12-01 17:14:54', null, null, null, '0');
-INSERT INTO `note` VALUES ('15', '4', '小黄人', '3', null, '标题fsdaef', '2017-12-01 17:17:58', null, null, null, '0');
-INSERT INTO `note` VALUES ('16', '4', '小黄人', '3', null, '标题', '2017-12-01 17:45:39', null, null, null, '0');
-INSERT INTO `note` VALUES ('17', '4', '小黄人', '3', '### hello', '标题', '2017-12-01 17:47:07', null, null, null, '0');
+INSERT INTO `note` VALUES ('1', '3', '用户3', '3', '内容啊', '标题', '2017-11-27 10:19:38', null, null, null, '1', null);
+INSERT INTO `note` VALUES ('3', '5', '客服', '0', null, '标题', '2017-12-01 15:34:10', null, null, null, '1', null);
+INSERT INTO `note` VALUES ('5', '5', '客服', '0', null, '12月的第一天', '2017-12-01 16:47:24', null, null, null, '1', null);
+INSERT INTO `note` VALUES ('14', '4', '小黄人', '3', null, '标题fsdaef', '2017-12-01 17:14:54', null, null, null, '1', null);
+INSERT INTO `note` VALUES ('15', '4', '小黄人', '3', null, '标题fsdaef', '2017-12-01 17:17:58', null, null, null, '1', null);
+INSERT INTO `note` VALUES ('16', '4', '小黄人', '3', null, '标题', '2017-12-01 17:45:39', null, null, null, '1', null);
+INSERT INTO `note` VALUES ('17', '4', '小黄人', '3', '### hello', '标题', '2017-12-01 17:47:07', null, null, null, '2', null);
+INSERT INTO `note` VALUES ('18', '3', '小黄人', '3', '### hello', '标题', '2017-12-02 10:18:21', null, null, null, '1', null);
 
 -- ----------------------------
 -- Table structure for `note_grade`
@@ -146,6 +148,21 @@ CREATE TABLE `note_user_grade` (
 -- Records of note_user_grade
 -- ----------------------------
 INSERT INTO `note_user_grade` VALUES ('1', '3', '1');
+
+-- ----------------------------
+-- Table structure for `note_user_zan`
+-- ----------------------------
+DROP TABLE IF EXISTS `note_user_zan`;
+CREATE TABLE `note_user_zan` (
+  `id` bigint(20) NOT NULL COMMENT '自增id',
+  `note_id` bigint(20) NOT NULL COMMENT '笔记id',
+  `user_id` bigint(20) NOT NULL COMMENT '用户id',
+  `zan` tinyint(4) NOT NULL COMMENT '是否赞 1-赞 2-没赞'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='笔记用户赞的情况';
+
+-- ----------------------------
+-- Records of note_user_zan
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for `user_info`
