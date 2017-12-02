@@ -20,7 +20,7 @@ public class Note extends BaseLongEntity {
 	private static final long serialVersionUID = 1L;
 	/**构造函数**/
 	public Note() {}
-	public Note(Long id,Long typeId,String author,Long userId,String content,String title,Date createTime,Date updateTime,Integer heart,Short status,Short isMarkDown) {
+	public Note(Long id,Long typeId,String author,Long userId,String content,String title,Date createTime,Date updateTime,Integer heart,Short status,Short isMarkDown,Integer zanNum) {
 		this.id=id;
 		this.typeId=typeId;
 		this.author=author;
@@ -32,6 +32,7 @@ public class Note extends BaseLongEntity {
 		this.heart=heart;
 		this.status=status;
 		this.isMarkDown=isMarkDown;
+		this.zanNum=zanNum;
 	}
 	public Note setNotNull(Long id,Long typeId,String author,Long userId,String title,Date createTime,Short isMarkDown) {
 		this.id=id;
@@ -64,6 +65,8 @@ public class Note extends BaseLongEntity {
 	private Short status;// 状态 1-正常 2-草稿 3-回收站
 	@Column(name = "is_mark_down")
 	private Short isMarkDown;// 1-morkdown 模式  2-普通模式（非空） 
+	@Column(name = "zan_num")
+	private Integer zanNum;// 赞的数量
 
 	/**属性Get、Set函数**/
 	public Long getTypeId() {
@@ -125,6 +128,12 @@ public class Note extends BaseLongEntity {
 	}
 	public void setIsMarkDown(Short isMarkDown) {
 		this.isMarkDown = isMarkDown;
+	}
+	public Integer getZanNum() {
+		return zanNum;
+	}
+	public void setZanNum(Integer zanNum) {
+		this.zanNum = zanNum;
 	}
 
 }
