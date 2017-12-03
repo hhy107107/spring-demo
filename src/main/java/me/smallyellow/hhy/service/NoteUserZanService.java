@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import me.smallyellow.base.core.utils.CollectionUtils;
+import me.smallyellow.hhy.mapper.NoteMapper;
 import me.smallyellow.hhy.mapper.NoteUserZanMapper;
+import me.smallyellow.hhy.model.Note;
 import me.smallyellow.hhy.model.NoteUserZan;
 import tk.mybatis.mapper.entity.Example;
 
@@ -20,6 +22,9 @@ public class NoteUserZanService {
 	
 	@Autowired
 	NoteUserZanMapper noteUserZanMapper;
+	
+	@Autowired
+	NoteMapper noteMapper;
 	
 	/**
 	 * 更新用户文章点赞情况
@@ -38,6 +43,20 @@ public class NoteUserZanService {
 		} else {
 			// 没数据就添加
 			noteUserZanMapper.insert(noteUserZan);
+		}
+		//修改文章点赞数
+		if (old != null && !old.getZan().equals(zan) || old == null) {
+			Note note = noteMapper.selectByPrimaryKey(noteId);
+			Integer oldZanNum = note.getZanNum();
+			if (oldZanNum == null) oldZanNum = 0;
+			if (old != null && zan.equals((short) 2) && oldZanNum > 0) {
+				//减了一个赞
+				note.setZanNum(oldZanNum - 1);
+			} else {
+				//增加了一个赞
+				note.setZanNum(oldZanNum + 1);
+			}
+			noteMapper.updateByPrimaryKeySelective(note);
 		}
 	}
 	

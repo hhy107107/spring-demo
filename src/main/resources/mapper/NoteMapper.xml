@@ -12,6 +12,9 @@
 		<result column="update_time" property="updateTime" />
 		<result column="heart" property="heart" />
 		<result column="status" property="status" />
+		<result column="edit_type" property="editType" />
+		<result column="zan_num" property="zanNum" />
+		<result column="read_num" property="readNum" />
 	</resultMap>
 	
 	<resultMap id="NoteDtoMap" type="me.smallyellow.hhy.model.dto.NoteDTO">
@@ -26,9 +29,12 @@
 		<result column="heart" property="heart" />
 		<result column="status" property="status" />
 		<result column="type_name" property="typeName" />
+		<result column="edit_type" property="editType" />
+		<result column="zan_num" property="zanNum" />
+		<result column="read_num" property="readNum" />
 	</resultMap>
 	
-	<sql id="table_column"> id,type_id,author,user_id,content,title,create_time,update_time,heart,status </sql>
+	<sql id="table_column"> id,type_id,author,user_id,content,title,create_time,update_time,heart,status,edit_type,zan_num,read_num </sql>
 	
 	<sql id="and_type_id">
 		<if test="typeId != null">
@@ -49,7 +55,7 @@
 		<include refid="and_type_id" />
 	</select>
 	
-	<sql id="table_column2"> n.id,n.type_id,n.author,n.user_id,n.content,n.title,n.create_time,n.update_time,n.heart,n.status </sql>
+	<sql id="table_column2"> n.id,n.type_id,n.author,n.user_id,n.content,n.title,n.create_time,n.update_time,n.heart,n.status,n.edit_type,n.zan_num,n.read_num </sql>
 	<!-- 文章详情，扩展了类型名称 -->
 	<select id="selectNoteDetail" resultMap="NoteDtoMap">
 		SELECT <include refid="table_column2" />, nt.name type_name FROM note n

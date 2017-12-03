@@ -38,6 +38,7 @@ public class NoteUserZanController {
 			result.setCode(AjaxResult.SUCCESS);
 			result.setResult(zan);
 		} catch(Exception e) {
+			e.printStackTrace();
 			result.setCode(AjaxResult.ERROR);
 			result.setMessage("服务器错误");
 		}
@@ -62,6 +63,7 @@ public class NoteUserZanController {
 			noteUserZanService.updateNoteZan(noteId, user.getId(), zan);
 			result.setCode(AjaxResult.SUCCESS);
 		} catch(Exception e) {
+			e.printStackTrace();
 			result.setCode(AjaxResult.ERROR);
 			result.setMessage("服务器错误");
 		}
