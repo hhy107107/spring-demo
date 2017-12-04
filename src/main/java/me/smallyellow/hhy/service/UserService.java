@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import me.smallyellow.base.boot.web.exception.WebException;
+import me.smallyellow.base.core.operator.AESOperator;
+import me.smallyellow.base.core.operator.mail.MailOperator;
+import me.smallyellow.base.core.operator.mail.config.MailConfig;
 import me.smallyellow.hhy.mapper.UserInfoMapper;
 import me.smallyellow.hhy.model.UserInfo;
 import me.smallyellow.hhy.model.dto.UserInfoDTO;
@@ -15,6 +18,9 @@ import me.smallyellow.hhy.model.dto.UserInfoDTO;
  */
 @Service
 public class UserService {
+	
+	@Autowired
+	private MailConfig mailConfig;
 	
 	@Autowired
 	private UserInfoMapper userInfoMapper; 
@@ -37,6 +43,12 @@ public class UserService {
 		result = userInfoMapper.selectOne(record);
 		if(result == null){
 			throw new WebException("密码错误");
+		}
+		if (result.getStatus().equals((short) 2)) {
+			throw new WebException("账号未验证，请登录邮箱验证");
+		}
+		if (result.getStatus().equals((short) 3)) {
+			throw new WebException("账号已锁定，请联系管理员");
 		}
 		return result;
 	}
@@ -71,7 +83,25 @@ public class UserService {
 	 * @throws WebException
 	 */
 	public void insertUser(UserInfo info) throws WebException {
+		UserInfo user = userInfoMapper.selectUserByusernameOrEmail(info.getUsername(), info.getEmail());
+		if (user != null) {
+			String exceptionMessage = "";
+			if (user.getUsername().equals(info.getUsername())) {
+				exceptionMessage = "用户名已经存在;";
+			}
+			if (user.getEmail().equals(info.getEmail())) {
+				exceptionMessage += "邮箱已经存在;";
+			}
+			throw new WebException(exceptionMessage);
+		}
 		int result = userInfoMapper.insert(info);
+		// 发送邮箱
+		try {
+			MailOperator.getInstance(mailConfig).sendEmail(info.getEmail());
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebException("发送邮件失败");
+		}
 		if (result <= 0) {
 			throw new WebException("插入失败");
 		}
@@ -102,6 +132,21 @@ public class UserService {
 			}
 		} else {
 			throw new WebException("两次密码不一致");
+		}
+	}
+	
+	/**
+	 * 激活用户
+	 * @param accessToken
+	 */
+	public void activateUser(String accessToken) {
+		String username = AESOperator.getInstance().decrypt(accessToken);
+		UserInfo info = new UserInfo();
+		info.setUsername(username);
+		UserInfo user = userInfoMapper.selectOne(info);
+		if (user != null) {
+			user.setStatus((short)1);
+			userInfoMapper.updateByPrimaryKeySelective(user);
 		}
 	}
 

@@ -37,7 +37,7 @@
 	<sql id="table_column"> id,type_id,author,user_id,content,title,create_time,update_time,heart,status,edit_type,zan_num,read_num </sql>
 	
 	<sql id="and_type_id">
-		<if test="typeId != null">
+		<if test="typeId != null and typeId != 0">
 			AND type_id = #{typeId}
 		</if>
 	</sql>

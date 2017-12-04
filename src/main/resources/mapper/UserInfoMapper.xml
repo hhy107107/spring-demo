@@ -18,6 +18,7 @@
 		<result column="reason" property="reason"/>
 		<result column="userface" property="userface"/>
 		<result column="grade_name" property="noteGradeName"/>
+		<result column="status" property="status"/>
 	</resultMap>
 	
 	<select id="selectUserInfoWithGrade" resultMap="BaseUserInfoDTOMap">
@@ -28,5 +29,9 @@
 		LEFT JOIN note_user_grade nug ON nug.user_id = ui.id
 		LEFT JOIN note_grade ng ON ng.id = nug.grade_id
 		WHERE ui.id = #{id}
+	</select>
+	
+	<select id="selectUserByusernameOrEmail" resultMap="BaseUserInfoDTOMap">
+		SELECT username, email FROM user_info WHERE username = #{username} or email = #{email}
 	</select>
 </mapper>

@@ -10,6 +10,7 @@ import me.smallyellow.hhy.mapper.NoteMapper;
 import me.smallyellow.hhy.mapper.NoteUserZanMapper;
 import me.smallyellow.hhy.model.Note;
 import me.smallyellow.hhy.model.NoteUserZan;
+import me.smallyellow.hhy.model.dto.NoteUserZanDTO;
 import tk.mybatis.mapper.entity.Example;
 
 /**
@@ -36,7 +37,9 @@ public class NoteUserZanService {
 		NoteUserZan noteUserZan = new NoteUserZan();
 		noteUserZan.setNotNull(null, noteId, userId, zan);
 		NoteUserZan old = getNoteZanByNoteIdAndUserId(noteId, userId);
+		Short oldZan = null;
 		if (old != null) {
+			oldZan = old.getZan();
 			// 有数据就更新
 			old.setZan(zan);
 			noteUserZanMapper.updateByPrimaryKeySelective(old);
@@ -45,7 +48,7 @@ public class NoteUserZanService {
 			noteUserZanMapper.insert(noteUserZan);
 		}
 		//修改文章点赞数
-		if (old != null && !old.getZan().equals(zan) || old == null) {
+		if (old != null && !zan.equals(oldZan) || old == null) {
 			Note note = noteMapper.selectByPrimaryKey(noteId);
 			Integer oldZanNum = note.getZanNum();
 			if (oldZanNum == null) oldZanNum = 0;
@@ -74,5 +77,22 @@ public class NoteUserZanService {
 			return list.get(0);
 		}
 		return null;
+	}
+	
+	/**
+	 * 根据用户id和笔记id 获取用户笔记点赞情况 包含总赞数
+	 * @param noteId 笔记id
+	 * @param userId 用户id
+	 * @return
+	 */
+	public NoteUserZanDTO getNoteZanWithTotalByNoteIdAndUserId(Long noteId, Long userId) {
+		NoteUserZan zan = getNoteZanByNoteIdAndUserId(noteId, userId);
+		NoteUserZanDTO dto = new NoteUserZanDTO();
+		if (zan != null) {
+			dto.setNotNull(zan.getId(), zan.getNoteId(), zan.getUserId(), zan.getZan());
+		}
+		Note note = noteMapper.selectByPrimaryKey(noteId);
+		dto.setTotalZanNum(note.getZanNum());
+		return dto;
 	}
 }

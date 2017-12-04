@@ -1,5 +1,7 @@
 package me.smallyellow.hhy.controller;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -33,7 +35,7 @@ public class UserController {
 	 * @param password
 	 * @return
 	 */
-	@RequestMapping(value = "/user/login", method = RequestMethod.GET)
+	@RequestMapping(value = "/common/login", method = RequestMethod.GET)
 	@ResponseBody
 	public AjaxResult index(HttpServletRequest request, HttpServletResponse response, Model model,
 			@RequestParam("username") String username,
@@ -45,6 +47,80 @@ public class UserController {
 			result.setCode(AjaxResult.SUCCESS);
 			result.setResult(user);
 		} catch (WebException e){
+			e.printStackTrace();
+			result.setCode(AjaxResult.ERROR);
+			result.setMessage(e.getMessage());
+		}
+		return result;
+	}
+	
+	/**
+	 * 退出登录
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/common/logout", method = RequestMethod.GET)
+	@ResponseBody
+	public AjaxResult index(HttpServletRequest request, HttpServletResponse response, Model model){
+		AjaxResult result = new AjaxResult();
+		try{
+			request.getSession().setAttribute("user", null);
+			result.setCode(AjaxResult.SUCCESS);
+		} catch (WebException e){
+			e.printStackTrace();
+			result.setCode(AjaxResult.ERROR);
+			result.setMessage(e.getMessage());
+		}
+		return result;
+	}
+	
+	/**
+	 * 注册
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @param username
+	 * @param password
+	 * @param email
+	 * @return
+	 */
+	@RequestMapping(value = "/common/register", method = RequestMethod.POST)
+	@ResponseBody
+	public AjaxResult register(HttpServletRequest request, HttpServletResponse response, Model model,
+			@RequestParam("username") String username,
+			@RequestParam("password") String password,
+			@RequestParam("email") String email){
+		AjaxResult result = new AjaxResult();
+		try{
+			UserInfo user = new UserInfo();
+			user.setNotNull(null, username, password, username, "1", email, (short)4, (short)1);
+			userService.insertUser(user);
+			result.setCode(AjaxResult.SUCCESS);
+		} catch (WebException e){
+			e.printStackTrace();
+			result.setCode(AjaxResult.ERROR);
+			result.setMessage(e.getMessage());
+		}
+		return result;
+	}
+	
+	@RequestMapping(value = "/common/activate", method = RequestMethod.GET)
+	@ResponseBody
+	public AjaxResult activate(HttpServletRequest request, HttpServletResponse response, Model model,
+			@RequestParam("accessToken") String accessToken){
+		AjaxResult result = new AjaxResult();
+		try{
+			userService.activateUser(accessToken);
+			try {
+				response.sendRedirect("http://www.baidu.com");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			result.setCode(AjaxResult.SUCCESS);
+		} catch (WebException e){
+			e.printStackTrace();
 			result.setCode(AjaxResult.ERROR);
 			result.setMessage(e.getMessage());
 		}
@@ -77,7 +153,7 @@ public class UserController {
 		try{
 			UserInfo user = (UserInfo) request.getSession().getAttribute(CommonConst.USER);
 			UserInfo info = new UserInfo();
-			info.setNotNull(user.getId(), null, null, name, reason);
+			user.setNotNull(user.getId(), null, null, name, null, null, reason, null);
 			info.setAddress(address);
 			info.setBirthday(DateUtils.stringToDate(birthday, 1));
 			info.setSex(sex);
@@ -86,6 +162,7 @@ public class UserController {
 			userService.updateUser(info);
 			result.setCode(AjaxResult.SUCCESS);
 		} catch (WebException e){
+			e.printStackTrace();
 			result.setCode(AjaxResult.ERROR);
 			result.setMessage(e.getMessage());
 		}
@@ -108,10 +185,11 @@ public class UserController {
 		try{
 			UserInfo user = (UserInfo) request.getSession().getAttribute(CommonConst.USER);
 			UserInfo info = new UserInfo();
-			info.setNotNull(user.getId(), null, newPwd, null, null);
+			user.setNotNull(user.getId(), null, newPwd, null, null, null, null, null);
 			userService.updateUserPwd(info, oldPwd);
 			result.setCode(AjaxResult.SUCCESS);
 		} catch (WebException e){
+			e.printStackTrace();
 			result.setCode(AjaxResult.ERROR);
 			result.setMessage(e.getMessage());
 		}

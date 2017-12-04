@@ -60,12 +60,6 @@ public class NoteService {
 	 * @return
 	 */
 	public Page<Note> selectNoteList(Long userId, Long typeId, Integer pageNo, Integer pageSize) {
-		Example example = new Example(Note.class);
-		Criteria criteria = example.createCriteria();
-		criteria.andEqualTo("userId", userId);
-		if (typeId != null) {
-			criteria.andEqualTo("typeId", typeId);
-		}
 		if (pageSize == null) {
 			pageSize = CommonConst.PAGE_SIZE;
 		}
@@ -86,6 +80,14 @@ public class NoteService {
 	 * @return
 	 */
 	public NoteDTO selectNoteDetail(Long userId, Long id) {
+		Note note = noteMapper.selectByPrimaryKey(id);
+		Integer readNum = note.getReadNum();
+		if (readNum == null) {
+			readNum = 0;
+		}
+		readNum = readNum + 1;
+		note.setReadNum(readNum);
+		noteMapper.updateByPrimaryKeySelective(note);
 		NoteDTO record = noteMapper.selectNoteDetail(id, userId);
 		return record;
 	}
