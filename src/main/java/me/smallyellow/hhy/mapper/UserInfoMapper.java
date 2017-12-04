@@ -22,4 +22,12 @@ public interface UserInfoMapper extends MyMapper<UserInfo> {
 	 * @return
 	 */
 	UserInfoDTO selectUserInfoWithGrade(@Param("id") Long id);
+
+	/**
+	 * 查找用户是否存在
+	 * @param username
+	 * @param email
+	 * @return
+	 */
+	UserInfo selectUserByusernameOrEmail(@Param("username") String username, @Param("email") String email);
 }

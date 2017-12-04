@@ -12,9 +12,7 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 
 import me.smallyellow.hhy.websocket.HHYWebSocketHandler;
 
-/**
- * Created by sang on 16-12-22.
- */
+
 @Configuration
 @EnableWebMvc
 @EnableWebSocket

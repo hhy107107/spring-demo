@@ -13,6 +13,7 @@ import me.smallyellow.base.boot.web.bean.AjaxResult;
 import me.smallyellow.hhy.constant.CommonConst;
 import me.smallyellow.hhy.model.NoteUserZan;
 import me.smallyellow.hhy.model.UserInfo;
+import me.smallyellow.hhy.model.dto.NoteUserZanDTO;
 import me.smallyellow.hhy.service.NoteUserZanService;
 
 @Controller
@@ -34,7 +35,7 @@ public class NoteUserZanController {
 		AjaxResult result = new AjaxResult();
 		UserInfo user = (UserInfo) request.getSession().getAttribute(CommonConst.USER);
 		try {
-			NoteUserZan zan = noteUserZanService.getNoteZanByNoteIdAndUserId(noteId, user.getId());
+			NoteUserZanDTO zan = noteUserZanService.getNoteZanWithTotalByNoteIdAndUserId(noteId, user.getId());
 			result.setCode(AjaxResult.SUCCESS);
 			result.setResult(zan);
 		} catch(Exception e) {

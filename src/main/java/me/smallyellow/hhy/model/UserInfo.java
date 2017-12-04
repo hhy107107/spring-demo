@@ -20,7 +20,7 @@ public class UserInfo extends BaseLongEntity {
 	private static final long serialVersionUID = 1L;
 	/**构造函数**/
 	public UserInfo() {}
-	public UserInfo(Long id,String username,String password,String name,String usertype,Integer enabled,String qq,String email,String tel,Short sex,String signature,String address,Date birthday,Short reason,String userface) {
+	public UserInfo(Long id,String username,String password,String name,String usertype,Integer enabled,String qq,String email,String tel,Short sex,String signature,String address,Date birthday,Short reason,String userface,Short status) {
 		this.id=id;
 		this.username=username;
 		this.password=password;
@@ -36,13 +36,17 @@ public class UserInfo extends BaseLongEntity {
 		this.birthday=birthday;
 		this.reason=reason;
 		this.userface=userface;
+		this.status=status;
 	}
-	public UserInfo setNotNull(Long id,String username,String password,String name,Short reason) {
+	public UserInfo setNotNull(Long id,String username,String password,String name,String usertype,String email,Short reason,Short status) {
 		this.id=id;
 		this.username=username;
 		this.password=password;
 		this.name=name;
+		this.usertype=usertype;
+		this.email=email;
 		this.reason=reason;
+		this.status=status;
 		return this;
 	}
 	/**属性**/
@@ -53,13 +57,13 @@ public class UserInfo extends BaseLongEntity {
 	@Column(name = "name")
 	private String name;// 用户名字（非空） 
 	@Column(name = "usertype")
-	private String usertype;// 用户类型 1-普通用户 2-管理员
+	private String usertype;// 用户类型 1-普通用户 2-管理员（非空） 
 	@Column(name = "enabled")
 	private Integer enabled;// 是否可用
 	@Column(name = "qq")
 	private String qq;// QQ
 	@Column(name = "email")
-	private String email;// 邮箱
+	private String email;// 邮箱（非空） 
 	@Column(name = "tel")
 	private String tel;// 联系电话
 	@Column(name = "sex")
@@ -74,6 +78,8 @@ public class UserInfo extends BaseLongEntity {
 	private Short reason;// 来到小黄平台的原因 1-崇拜小黄 2-崇拜统子 3-想了解bjhj 4-被小黄无形之中的气质所吸引（非空） 
 	@Column(name = "userface")
 	private String userface;// 头像
+	@Column(name = "status")
+	private Short status;// 用户状态 1-正常 2-未激活 3-锁定（非空） 
 
 	/**属性Get、Set函数**/
 	public String getUsername() {
@@ -159,6 +165,12 @@ public class UserInfo extends BaseLongEntity {
 	}
 	public void setUserface(String userface) {
 		this.userface = userface;
+	}
+	public Short getStatus() {
+		return status;
+	}
+	public void setStatus(Short status) {
+		this.status = status;
 	}
 
 }

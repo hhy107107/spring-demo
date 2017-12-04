@@ -41,6 +41,9 @@ public class NoteTypeController {
 		AjaxResult result = new AjaxResult();
 		UserInfo user = (UserInfo) request.getSession().getAttribute(CommonConst.USER);
 		List<NoteType> list = noteTypeService.selectNoteTypeList(user.getId());
+		NoteType type = new NoteType();
+		type.setNotNull(0L, "全部", user.getId());
+		list.add(0, type);
 		result.setCode(AjaxResult.SUCCESS);
 		result.setResult(list);
 		return result;
