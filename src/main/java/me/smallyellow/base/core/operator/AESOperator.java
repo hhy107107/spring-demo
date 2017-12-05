@@ -53,7 +53,8 @@ public class AESOperator {
 	 * @param sSrc
 	 * @return
 	 */
-	public String decrypt(String sSrc){  
+	public String decrypt(String sSrc){ 
+		sSrc = sSrc.replaceAll(" ", "+"); //从浏览器传过来，会把加号变成空格，这里要改回来
 	    try {  
 	        byte[] raw = sKey.getBytes("ASCII");  
 	        SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");  
@@ -69,4 +70,12 @@ public class AESOperator {
 	        return null;  
 	    }  
 	}  
+	
+//	public static void main(String[] args) {
+//		String msg = "843847127@qq.com";
+//		String jiami = AESOperator.getInstance().encrypt(msg);
+//		System.out.println(jiami);
+//		String jiemi = AESOperator.getInstance().decrypt(jiami);
+//		System.out.println(jiemi);
+//	}
 }

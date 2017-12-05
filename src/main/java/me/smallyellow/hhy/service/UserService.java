@@ -7,6 +7,7 @@ import me.smallyellow.base.boot.web.exception.WebException;
 import me.smallyellow.base.core.operator.AESOperator;
 import me.smallyellow.base.core.operator.mail.MailOperator;
 import me.smallyellow.base.core.operator.mail.config.MailConfig;
+import me.smallyellow.base.core.utils.StringUtils;
 import me.smallyellow.hhy.mapper.UserInfoMapper;
 import me.smallyellow.hhy.model.UserInfo;
 import me.smallyellow.hhy.model.dto.UserInfoDTO;
@@ -74,6 +75,9 @@ public class UserService {
 	 */
 	public UserInfoDTO getUserWithGrade(Long id) {
 		UserInfoDTO dto = userInfoMapper.selectUserInfoWithGrade(id);
+		if (StringUtils.isEmpty(dto.getNoteGradeName())) {
+			dto.setNoteGradeName("暂无等级");
+		}
 		return dto;
 	}
 	
@@ -125,13 +129,9 @@ public class UserService {
 	 * @param oldPwd 旧密码
 	 */
 	public void updateUserPwd(UserInfo info, String oldPwd) throws WebException {
-		if (info.getPassword().equals(oldPwd)) {
-			int result = userInfoMapper.updateByPrimaryKeySelective(info);
-			if (result <= 0) {
-				throw new WebException("修改密码失败");
-			}
-		} else {
-			throw new WebException("两次密码不一致");
+		int result = userInfoMapper.updateByPrimaryKeySelective(info);
+		if (result <= 0) {
+			throw new WebException("修改密码失败");
 		}
 	}
 	
@@ -140,9 +140,9 @@ public class UserService {
 	 * @param accessToken
 	 */
 	public void activateUser(String accessToken) {
-		String username = AESOperator.getInstance().decrypt(accessToken);
+		String email = AESOperator.getInstance().decrypt(accessToken);
 		UserInfo info = new UserInfo();
-		info.setUsername(username);
+		info.setEmail(email);
 		UserInfo user = userInfoMapper.selectOne(info);
 		if (user != null) {
 			user.setStatus((short)1);

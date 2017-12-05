@@ -95,7 +95,7 @@ public class UserController {
 		AjaxResult result = new AjaxResult();
 		try{
 			UserInfo user = new UserInfo();
-			user.setNotNull(null, username, password, username, "1", email, (short)4, (short)1);
+			user.setNotNull(null, username, password, username, "1", email, (short)4, (short)2);
 			userService.insertUser(user);
 			result.setCode(AjaxResult.SUCCESS);
 		} catch (WebException e){
@@ -106,6 +106,14 @@ public class UserController {
 		return result;
 	}
 	
+	/**
+	 * 激活用户
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @param accessToken
+	 * @return
+	 */
 	@RequestMapping(value = "/common/activate", method = RequestMethod.GET)
 	@ResponseBody
 	public AjaxResult activate(HttpServletRequest request, HttpServletResponse response, Model model,
@@ -114,7 +122,7 @@ public class UserController {
 		try{
 			userService.activateUser(accessToken);
 			try {
-				response.sendRedirect("http://www.baidu.com");
+				response.sendRedirect("http://localhost:8080/");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -153,13 +161,14 @@ public class UserController {
 		try{
 			UserInfo user = (UserInfo) request.getSession().getAttribute(CommonConst.USER);
 			UserInfo info = new UserInfo();
-			user.setNotNull(user.getId(), null, null, name, null, null, reason, null);
+			info.setNotNull(user.getId(), null, null, name, null, null, reason, null);
 			info.setAddress(address);
 			info.setBirthday(DateUtils.stringToDate(birthday, 1));
 			info.setSex(sex);
 			info.setSignature(signature);
 			info.setUserface(userface);
 			userService.updateUser(info);
+			request.getSession().setAttribute("user", info);
 			result.setCode(AjaxResult.SUCCESS);
 		} catch (WebException e){
 			e.printStackTrace();
@@ -185,7 +194,7 @@ public class UserController {
 		try{
 			UserInfo user = (UserInfo) request.getSession().getAttribute(CommonConst.USER);
 			UserInfo info = new UserInfo();
-			user.setNotNull(user.getId(), null, newPwd, null, null, null, null, null);
+			info.setNotNull(user.getId(), null, newPwd, null, null, null, null, null);
 			userService.updateUserPwd(info, oldPwd);
 			result.setCode(AjaxResult.SUCCESS);
 		} catch (WebException e){

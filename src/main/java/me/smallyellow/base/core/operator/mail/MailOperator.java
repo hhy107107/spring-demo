@@ -84,9 +84,8 @@ public class MailOperator {
         // 4. Subject: 邮件主题（标题有广告嫌疑，避免被邮件服务器误认为是滥发广告以至返回失败，请修改标题）
         message.setSubject("用户注册验证", "UTF-8");
         // 5. Content: 邮件正文（可以使用html标签）
-        String url = mailConfig.getActivateUrl() + AESOperator.getInstance().encrypt(sendMail);
-        message.setContent("<a herf=\"" + url + "\">欢迎注册小黄平台，请点击此处完成验证</a> </br>"
-        + "如果没有跳转，请复制链接地址到浏览器" + url, "text/html;charset=UTF-8");
+        String url = mailConfig.getActivateUrl() + AESOperator.getInstance().encrypt(receiveMail);
+        message.setContent("欢迎注册小黄平台，请点击链接完成验证" + url, "text/html;charset=UTF-8");
         // 6. 设置发件时间
         message.setSentDate(new Date());
         // 7. 保存设置
