@@ -42,9 +42,9 @@
 		</if>
 	</sql>
 	<!-- 分页查询文章列表 -->
-	<select id="selectNoteList" resultMap="BaseNoteMap">
-		SELECT <include refid="table_column" /> FROM note
-		WHERE user_id = #{userId} 
+	<select id="selectNoteList" resultMap="NoteDtoMap">
+		SELECT <include refid="table_column2" />, nt.name type_name FROM note n
+		LEFT JOIN note_type nt ON nt.id = n.type_id
 		<include refid="and_type_id" />
 		LIMIT #{pageNo},#{pageSize}
 	</select>

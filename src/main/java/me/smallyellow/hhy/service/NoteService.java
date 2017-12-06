@@ -59,13 +59,13 @@ public class NoteService {
 	 * @param pageSize
 	 * @return
 	 */
-	public Page<Note> selectNoteList(Long userId, Long typeId, Integer pageNo, Integer pageSize) {
+	public Page<NoteDTO> selectNoteList(Long userId, Long typeId, Integer pageNo, Integer pageSize) {
 		if (pageSize == null) {
 			pageSize = CommonConst.PAGE_SIZE;
 		}
-		List<Note> list = noteMapper.selectNoteList((pageNo - 1) * pageSize, pageSize, typeId, userId);
+		List<NoteDTO> list = noteMapper.selectNoteList((pageNo - 1) * pageSize, pageSize, typeId, userId);
 		Integer count = noteMapper.selectNoteCount(typeId, userId);
-		Page<Note> page = new Page<>();
+		Page<NoteDTO> page = new Page<>();
 		page.setList(list);
 		page.setTotalCount(count);
 		page.setPageNo(pageNo);

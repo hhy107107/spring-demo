@@ -26,7 +26,7 @@ public interface NoteMapper extends MyMapper<Note> {
 	 * @param userId
 	 * @return
 	 */
-	public List<Note> selectNoteList(@Param("pageNo") Integer pageNo, @Param("pageSize") Integer pageSize,
+	public List<NoteDTO> selectNoteList(@Param("pageNo") Integer pageNo, @Param("pageSize") Integer pageSize,
 			@Param("typeId") Long typeId, @Param("userId") Long userId);
 	
 	/**

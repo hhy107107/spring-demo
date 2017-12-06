@@ -49,7 +49,7 @@ public class NoteController {
 		AjaxResult result = new AjaxResult();
 		try {
 			UserInfo user = (UserInfo) request.getSession().getAttribute(CommonConst.USER);
-			Page<Note> list = noteService.selectNoteList(user.getId(), typeId, pageNo, pageSize);
+			Page<NoteDTO> list = noteService.selectNoteList(user.getId(), typeId, pageNo, pageSize);
 			result.setCode(AjaxResult.SUCCESS);
 			result.setResult(list);
 		} catch (Exception e){
