@@ -2,6 +2,9 @@ package me.smallyellow.hhy.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.sun.mail.smtp.SMTPAddressFailedException;
 
 import me.smallyellow.base.boot.web.exception.WebException;
 import me.smallyellow.base.core.operator.AESOperator;
@@ -86,6 +89,7 @@ public class UserService {
 	 * @param info
 	 * @throws WebException
 	 */
+	@Transactional
 	public void insertUser(UserInfo info) throws WebException {
 		UserInfo user = userInfoMapper.selectUserByusernameOrEmail(info.getUsername(), info.getEmail());
 		if (user != null) {
@@ -102,6 +106,9 @@ public class UserService {
 		// 发送邮箱
 		try {
 			MailOperator.getInstance(mailConfig).sendEmail(info.getEmail());
+		} catch (SMTPAddressFailedException e) {
+			e.printStackTrace();
+			throw new WebException("邮箱不存在");
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new WebException("发送邮件失败");

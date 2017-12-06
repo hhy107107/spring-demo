@@ -8,7 +8,9 @@ import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +28,9 @@ import tk.mybatis.spring.mapper.MapperScannerConfigurer;
 @Configuration
 public class MyBatisConfig implements EnvironmentAware{
 
+	@Autowired
+	private DBConfig dbConfig;
+	
 	private Environment environment;
 	
 	@Override
@@ -39,20 +44,28 @@ public class MyBatisConfig implements EnvironmentAware{
     @Bean
     public DataSource test1DataSource() throws Exception {
         Properties props = new Properties();
-        props.put("driverClassName", environment.getProperty("test1-datasource.driverClassName"));
-        props.put("url", environment.getProperty("test1-datasource.url"));
-        props.put("username", environment.getProperty("test1-datasource.username"));
-        props.put("password", environment.getProperty("test1-datasource.password"));
+//        props.put("driverClassName", environment.getProperty("test1-datasource.driverClassName"));
+//        props.put("url", environment.getProperty("test1-datasource.url"));
+//        props.put("username", environment.getProperty("test1-datasource.username"));
+//        props.put("password", environment.getProperty("test1-datasource.password"));
+	      props.put("driverClassName", dbConfig.getTest1DriverClassName());
+	      props.put("url", dbConfig.getTest1Url());
+	      props.put("username", dbConfig.getTest1Username());
+	      props.put("password", dbConfig.getTest1Password());
         return DruidDataSourceFactory.createDataSource(props);
     }
     
     @Bean
     public DataSource test2DataSource() throws Exception {
         Properties props = new Properties();
-        props.put("driverClassName", environment.getProperty("test2-datasource.driverClassName"));
-        props.put("url", environment.getProperty("test2-datasource.url"));
-        props.put("username", environment.getProperty("test2-datasource.username"));
-        props.put("password", environment.getProperty("test2-datasource.password"));
+//        props.put("driverClassName", environment.getProperty("test2-datasource.driverClassName"));
+//        props.put("url", environment.getProperty("test2-datasource.url"));
+//        props.put("username", environment.getProperty("test2-datasource.username"));
+//        props.put("password", environment.getProperty("test2-datasource.password"));
+	      props.put("driverClassName", dbConfig.getTest2DriverClassName());
+	      props.put("url", dbConfig.getTest2Url());
+	      props.put("username", dbConfig.getTest2Username());
+	      props.put("password", dbConfig.getTest2Password());
         return DruidDataSourceFactory.createDataSource(props);
     }
     
@@ -110,4 +123,6 @@ public class MyBatisConfig implements EnvironmentAware{
     public DataSourceTransactionManager transactionManager(DynamicDataSource dataSource) throws Exception {
         return new DataSourceTransactionManager(dataSource);
     }
+
+    
 }
