@@ -15,7 +15,7 @@
 	<!-- 查询聊天记录 -->
 	<select id="selectMessage" resultMap="BaseMessageMap">
 		SELECT <include refid="table_column" /> FROM message
-		WHERE type = 1 AND user_to = #{userTo} AND user_from = #{userFrom}
+		WHERE type = 1 AND (user_to = #{userOne} AND user_from = #{userTwo} OR user_to = #{userTwo} AND user_from = #{userOne} )
 		<if test="lastId != null">
 			AND id <![CDATA[ > ]]> #{lastId} 
 		</if>

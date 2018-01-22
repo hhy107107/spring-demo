@@ -1,7 +1,10 @@
 package me.smallyellow.base.core.utils;
 
+import java.util.List;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
 /**
  * json工具类
@@ -25,6 +28,18 @@ public class JSONUtils {
 			e.printStackTrace();
 		}
         return bean;
+	}
+	
+	/**
+	 * json string to list
+	 * @param json
+	 * @param clazzList
+	 * @return
+	 */
+	public static <T> List<T> toList(String json, List<T> clazzList) {
+		Gson gson = new Gson();
+		List<T> retList = gson.fromJson(json, new TypeToken<List<T>>() {}.getType());
+		return retList;
 	}
 	
 	/**

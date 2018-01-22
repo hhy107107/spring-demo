@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import me.smallyellow.base.boot.web.WebPathProperties;
 import me.smallyellow.base.boot.web.bean.AjaxResult;
 import me.smallyellow.base.boot.web.bean.VueStaticInfo;
 import me.smallyellow.base.boot.web.bean.VueStaticUtils;
@@ -33,6 +34,9 @@ public class HomeController {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private WebPathProperties webPathProperties;
+	
 	private final static VueStaticInfo vue = new VueStaticInfo();
 	
 	
@@ -47,8 +51,8 @@ public class HomeController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index(HttpServletRequest request, HttpServletResponse response, Model model){
 		if(!vue.isInit()){
-			//VueStaticUtils.init(webPathProperties.getStaticUrl()+"/smallyellow/init.json", vue);
-			VueStaticUtils.init("http://127.0.0.1:9999/static/init.json", vue);
+			VueStaticUtils.init(webPathProperties.getStaticUrl()+"/smallyellow/init.json", vue);
+			//VueStaticUtils.init("http://127.0.0.1:9999/static/init.json", vue);
 		}
 		model.addAttribute("vue", vue);
 		return "index";
