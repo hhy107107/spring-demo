@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2017-12-06 18:02:57
+Date: 2018-01-02 14:57:30
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -43,18 +43,22 @@ CREATE TABLE `file` (
 -- ----------------------------
 DROP TABLE IF EXISTS `message`;
 CREATE TABLE `message` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `user_to` bigint(20) NOT NULL,
   `user_from` bigint(20) NOT NULL,
   `type` tinyint(4) NOT NULL,
   `message` varchar(255) DEFAULT NULL,
   `send_time` datetime NOT NULL,
-  `status` tinyint(4) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `status` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of message
 -- ----------------------------
+INSERT INTO `message` VALUES ('1', '3', '0', '1', 'n', '2017-12-21 16:18:29', '4');
+INSERT INTO `message` VALUES ('2', '0', '3', '1', 'nids', '2017-12-21 16:19:01', '4');
+INSERT INTO `message` VALUES ('3', '0', '3', '1', 'n', '2017-12-21 16:39:15', '4');
 
 -- ----------------------------
 -- Table structure for `note`
@@ -79,20 +83,21 @@ CREATE TABLE `note` (
   KEY `fk_note_uid` (`user_id`),
   CONSTRAINT `fk_note_type` FOREIGN KEY (`type_id`) REFERENCES `note_type` (`id`),
   CONSTRAINT `fk_note_uid` FOREIGN KEY (`user_id`) REFERENCES `user_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COMMENT='笔记';
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COMMENT='笔记';
 
 -- ----------------------------
 -- Records of note
 -- ----------------------------
-INSERT INTO `note` VALUES ('1', '3', '用户3', '3', '内容啊', '标题', '2017-11-27 10:19:38', null, null, null, '1', '1', '00000000000');
+INSERT INTO `note` VALUES ('1', '3', '用户3', '3', '内容啊', '标题', '2017-11-27 10:19:38', null, null, null, '1', '1', '00000000024');
 INSERT INTO `note` VALUES ('3', '5', '客服', '0', null, '标题', '2017-12-01 15:34:10', null, null, null, '1', null, '00000000000');
 INSERT INTO `note` VALUES ('5', '5', '客服', '0', null, '12月的第一天', '2017-12-01 16:47:24', null, null, null, '1', null, '00000000000');
 INSERT INTO `note` VALUES ('14', '4', '小黄人', '3', null, '标题fsdaef', '2017-12-01 17:14:54', null, null, null, '1', null, '00000000000');
 INSERT INTO `note` VALUES ('15', '4', '小黄人', '3', null, '标题fsdaef', '2017-12-01 17:17:58', null, null, null, '1', null, '00000000000');
-INSERT INTO `note` VALUES ('16', '4', '小黄人', '3', null, '标题', '2017-12-01 17:45:39', null, null, null, '1', null, '00000000002');
+INSERT INTO `note` VALUES ('16', '4', '小黄人', '3', null, '标题', '2017-12-01 17:45:39', null, null, null, '1', null, '00000000003');
 INSERT INTO `note` VALUES ('17', '4', '小黄人', '3', '### hello', '标题', '2017-12-01 17:47:07', null, null, null, '2', null, '00000000004');
-INSERT INTO `note` VALUES ('18', '3', '小黄人', '3', '### hello', '标题', '2017-12-02 10:18:21', null, null, null, '1', '1', '00000000022');
+INSERT INTO `note` VALUES ('18', '3', '小黄人', '3', '### hello', '标题', '2017-12-02 10:18:21', null, null, null, '1', '1', '00000000024');
 INSERT INTO `note` VALUES ('19', '6', 'hhy', '13', '### hello', '标题', '2017-12-05 12:01:05', null, null, null, '1', null, '00000000001');
+INSERT INTO `note` VALUES ('20', '3', '小黄人', '3', 'kgfdatragar rgeafa adher fgre\n\n\n\n\n\n\n\n', '标题', '2017-12-07 08:32:30', null, null, null, '1', null, '00000000002');
 
 -- ----------------------------
 -- Table structure for `note_grade`
@@ -194,13 +199,13 @@ CREATE TABLE `user_info` (
   `status` tinyint(4) NOT NULL COMMENT '用户状态 1-正常 2-未激活 3-锁定',
   PRIMARY KEY (`id`),
   KEY `id` (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COMMENT='用户信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='用户信息表';
 
 -- ----------------------------
 -- Records of user_info
 -- ----------------------------
+INSERT INTO `user_info` VALUES ('0', 'service', 'aaaa', '客服', '1', null, null, '', null, null, null, null, null, '1', 'test\\2017-12-21\\09def8fd-40fb-4d67-a13a-523f82240a3e.jpg', '0');
 INSERT INTO `user_info` VALUES ('3', 'test3', 'bbbb', '小黄人', '1', null, null, '', null, '1', '小黄是世界上最聪明的小黄，没有之一', '浙江杭州', '1995-01-07', '1', 'test\\2017-12-01\\3f2af929-0555-41bd-b4c6-2ca68f0ca390.jpg', '0');
 INSERT INTO `user_info` VALUES ('4', 'test4', 'cccc', '用户4', '2', null, null, '', null, null, null, null, null, '1', null, '0');
 INSERT INTO `user_info` VALUES ('5', 'test5', 'dddd', '用户5', '1', null, null, '', null, null, null, null, null, '1', null, '0');
-INSERT INTO `user_info` VALUES ('6', 'service', 'aaaa', '客服', '1', null, null, '', null, null, null, null, null, '1', null, '0');
 INSERT INTO `user_info` VALUES ('13', 'hhy', '123456', 'hhy', '1', null, null, '843847127@qq.com', null, '1', '小黄是世界上最聪明的小黄，没有之一', '浙江杭州', '2017-12-05', '4', 'test\\2017-12-05\\cde250ee-8f23-4f35-bbe9-805b6af781b3.jpg', '1');

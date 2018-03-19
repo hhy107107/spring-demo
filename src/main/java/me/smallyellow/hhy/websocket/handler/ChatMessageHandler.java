@@ -1,22 +1,17 @@
 package me.smallyellow.hhy.websocket.handler;
 
 import java.io.IOException;
-import java.util.Date;
 
 import javax.websocket.MessageHandler;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import me.smallyellow.base.boot.web.exception.WebException;
 import me.smallyellow.base.core.utils.JSONUtils;
-import me.smallyellow.hhy.model.Message;
 import me.smallyellow.hhy.service.MessageService;
 import me.smallyellow.hhy.websocket.ChatEndPoint;
 import me.smallyellow.hhy.websocket.bean.MessageBean;
 import me.smallyellow.hhy.websocket.bean.NoticeMessageBean;
 import me.smallyellow.hhy.websocket.bean.TextMessageBean;
 import me.smallyellow.hhy.websocket.bean.WSConst;
-import me.smallyellow.hhy.websocket.bean.WSConst.Code;
 
 /**
  * 收到消息处理

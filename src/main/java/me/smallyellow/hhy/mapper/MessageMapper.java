@@ -18,12 +18,13 @@ import me.smallyellow.hhy.model.Message;
 public interface MessageMapper extends MyMapper<Message> {
 	
 	/**
-	 * 查询聊天记录
+	 * 查询两个用户的聊天记录
 	 * @param toId 给谁发的
 	 * @param fromId 谁接收的
 	 * @param lastId 最近的聊天记录编号
 	 * @return
 	 */
-	public List<Message> selectMessage(@Param("toId") Long toId, @Param("fromId") Long fromId, 
+	public List<Message> selectMessage(@Param("userOne") Long userOne, @Param("userTwo") Long userTwo, 
 			@Param("lastId") Long lastId, @Param("size") Integer size);
+	
 }
