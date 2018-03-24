@@ -8,7 +8,7 @@ import me.smallyellow.base.boot.utils.TableUtils;
 public class TableToBean {
 	
 	public static void main(String[] args) {
-		TableUtils.runToBean("jdbc:mysql://localhost:3306/test", "root", "", "me.smallyellow.hhy", "*");
-		//TableUtils.runToBean("jdbc:mysql://localhost:3306/test2", "root", "", "me.smallyellow.hhy", "user_info");
+		//TableUtils.runToBean("jdbc:mysql://localhost:3306/test", "root", "", "me.smallyellow.hhy", "*");
+		TableUtils.runToBean("jdbc:mysql://localhost:3306/test2?useUnicode=true&characterEncoding=utf-8&useSSL=false", "root", "922107", "me.smallyellow.hhy", "*");
 	}
 }

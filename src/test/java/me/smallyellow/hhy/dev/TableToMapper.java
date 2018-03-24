@@ -8,8 +8,8 @@ import me.smallyellow.base.boot.utils.TableUtils;
 public class TableToMapper {
 	
 	public static void main(String[] args) {
-		TableUtils.runToMapper("jdbc:mysql://localhost:3306/test", "root", "", "me.smallyellow.hhy", "mapper", "*");
-		//TableUtils.runToMapper("jdbc:mysql://localhost:3306/test2", "root", "", "me.smallyellow.hhy", "mapper", "*");
+		//TableUtils.runToMapper("jdbc:mysql://localhost:3306/test", "root", "", "me.smallyellow.hhy", "mapper", "*");
+		TableUtils.runToMapper("jdbc:mysql://localhost:3306/test2?useUnicode=true&characterEncoding=utf-8&useSSL=false", "root", "922107", "me.smallyellow.hhy", "mapper", "*");
 	}
 
 }

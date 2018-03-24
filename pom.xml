@@ -12,6 +12,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <tio-im.version>0.0.2-RELEASE</tio-im.version>
   </properties>
 
   
@@ -21,6 +22,28 @@
         <artifactId>spring-boot-starter-parent</artifactId>  
         <version>1.4.0.BUILD-SNAPSHOT</version>  
     </parent>  
+      
+  	<pluginRepositories>
+		<pluginRepository>
+			<id>nexus</id>
+			<name>nexus</name>
+			<url>http://39.108.176.184:8081/nexus/content/groups/public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+        <pluginRepository>  
+            <id>spring-snapshots</id>  
+            <url>http://repo.spring.io/snapshot</url>  
+        </pluginRepository>  
+        <pluginRepository>  
+            <id>spring-milestones</id>  
+            <url>http://repo.spring.io/milestone</url>  
+        </pluginRepository>  
+	</pluginRepositories>
   
     <!-- Spring Boot Web 依赖 -->  
     <dependencies>  
@@ -161,6 +184,16 @@
 			<artifactId>jsch</artifactId>
 			<version>0.1.52</version>
 		</dependency>
+        <dependency>
+            <groupId>org.t-io</groupId>
+            <artifactId>tio-im-server</artifactId>
+            <version>${tio-im.version}</version>
+        </dependency>
+        <dependency>
+        	<groupId>org.apache.hadoop</groupId>
+        	<artifactId>hadoop-core</artifactId>
+        	<version>1.0.0</version>
+        </dependency>
     </dependencies>  
   
     <!-- Add Spring repositories -->  
@@ -178,17 +211,7 @@
         
         
     </repositories>  
-    
-    <pluginRepositories>  
-        <pluginRepository>  
-            <id>spring-snapshots</id>  
-            <url>http://repo.spring.io/snapshot</url>  
-        </pluginRepository>  
-        <pluginRepository>  
-            <id>spring-milestones</id>  
-            <url>http://repo.spring.io/milestone</url>  
-        </pluginRepository>  
-    </pluginRepositories>  
+
     
     <!-- Package as an executable jar -->  
     <build>  

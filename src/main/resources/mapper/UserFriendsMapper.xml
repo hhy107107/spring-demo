@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.smallyellow.hhy.mapper.UserFriendsMapper">
+
+	<!-- 好友列表 -->
+	<select id="listFriendsWithGroup" resultType="me.smallyellow.hhy.model.dto.UserFriendsDTO">
+		SELECT fg.id, fg.`name`, uf.friend_id friendId, fg.id groupId, uii.`name` nick, uii.username, uii.userface FROM user_info ui
+		LEFT JOIN friends_group fg ON fg.onwer_user = ui.id
+		LEFT JOIN user_friends uf ON uf.group_id = fg.id
+		LEFT JOIN user_info uii ON uii.id = uf.friend_id
+		WHERE ui.id = #{userId} 
+	</select>
+</mapper>
