@@ -72,6 +72,17 @@ public class UserService {
 	}
 	
 	/**
+	 * 根据用户名获取用户
+	 * @param username
+	 * @return
+	 */
+	public UserInfo getUser(String username) {
+		UserInfo u = new UserInfo();
+		u.setUsername(username);
+		return userInfoMapper.selectOne(u);
+	}
+	
+	/**
 	 * 获取用户，加上等级
 	 * @param id
 	 * @return

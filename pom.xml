@@ -125,7 +125,6 @@
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
 		</dependency>
-		
 		<dependency>
 		    <groupId>javax.persistence</groupId>
 		    <artifactId>persistence-api</artifactId>
@@ -185,7 +184,7 @@
 			<version>0.1.52</version>
 		</dependency>
         <dependency>
-            <groupId>org.t-io</groupId>
+            <groupId>me.smallYellow</groupId>
             <artifactId>tio-im-server</artifactId>
             <version>${tio-im.version}</version>
         </dependency>
@@ -194,6 +193,16 @@
         	<artifactId>hadoop-core</artifactId>
         	<version>1.0.0</version>
         </dependency>
+        <!-- <dependency>
+        	<groupId>org.springframework.boot</groupId>
+        	<artifactId>spring-boot-starter-data-gemfire</artifactId>
+        </dependency> -->
+        <!-- https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
+		<dependency>
+		    <groupId>commons-fileupload</groupId>
+		    <artifactId>commons-fileupload</artifactId>
+		    <version>1.3.3</version>
+		</dependency>
     </dependencies>  
   
     <!-- Add Spring repositories -->  

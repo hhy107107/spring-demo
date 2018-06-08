@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import me.smallyellow.base.boot.web.bean.AjaxResult;
-import me.smallyellow.base.boot.web.bean.Page;
 import me.smallyellow.base.boot.web.exception.WebException;
 import me.smallyellow.hhy.constant.CommonConst;
 import me.smallyellow.hhy.model.Message;

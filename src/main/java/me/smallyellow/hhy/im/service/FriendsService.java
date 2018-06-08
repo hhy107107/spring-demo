@@ -17,7 +17,10 @@ import me.smallyellow.base.boot.web.exception.WebException;
 import me.smallyellow.base.core.utils.CollectionUtils;
 import me.smallyellow.hhy.mapper.FriendsGroupMapper;
 import me.smallyellow.hhy.mapper.UserFriendsMapper;
+import me.smallyellow.hhy.mapper.UserInfoMapper;
 import me.smallyellow.hhy.model.FriendsGroup;
+import me.smallyellow.hhy.model.UserFriends;
+import me.smallyellow.hhy.model.UserInfo;
 import me.smallyellow.hhy.model.dto.FriendGroupDTO;
 import me.smallyellow.hhy.model.dto.UserFriendsDTO;
 
@@ -25,10 +28,13 @@ import me.smallyellow.hhy.model.dto.UserFriendsDTO;
 public class FriendsService {
 
 	@Autowired
-	UserFriendsMapper userFriendsMapper;
+	private UserFriendsMapper userFriendsMapper;
 	
 	@Autowired
 	private FriendsGroupMapper friendsGroupMapper;
+	
+	@Autowired
+	private UserInfoMapper userInfoMapper;
 
 	
 	/**
@@ -39,7 +45,7 @@ public class FriendsService {
 	 */
 	public List<Group> listFriends(Long userId) throws WebException {
 		List<UserFriendsDTO> list = userFriendsMapper.listFriendsWithGroup(userId);
-		if (CollectionUtils.isNotEmpty(list) && (list.size() == 1 && list.get(0) != null)) {
+		if (CollectionUtils.isNotEmpty(list) && list.size() > 1 || (list.size() == 1 && list.get(0) != null)) {
 			List<Group> groupList = new ArrayList<>();
 			for (UserFriendsDTO dto : list) {
 				User user = null;
@@ -76,7 +82,7 @@ public class FriendsService {
 			return groupList;
 		} else {
 			FriendsGroup group = new FriendsGroup();
-			group.setNotNull(null, userId);
+			group.setNotNull(null, userId, (short) 0);
 			group.setName("我的好友");
 			int result = friendsGroupMapper.insert(group);
 			if (result > 0) {
@@ -87,15 +93,46 @@ public class FriendsService {
 		return null;
 	}
 
-
-	public void requestFriend(String username, String frienduname) {
-//		ChatBody chatBody = new ChatBody()
-//				.setFrom(username)
-//				.setTo(frienduname)
-//				.setMsgType("text")
-//				.setChatType(1)
-//				.setContent("发送好友");
-//		TcpPacket chatPacket = new TcpPacket(Command.COMMAND_CHAT_REQ,chatBody.toByte());
-//		Aio.send(clientChannelContext, chatPacket);
+	/**
+	 * 请求好友
+	 * @param username
+	 * @param frienduname
+	 */
+	public boolean requestFriend(String username, String frienduname) {
+		UserInfo user = getUserByUsername(username);
+		UserInfo friendUser = getUserByUsername(frienduname);
+		FriendsGroup friendsGroup = new FriendsGroup();
+		friendsGroup.setOnwerUser(friendUser.getId());
+		friendsGroup.setType((short) 0);
+		FriendsGroup fg = friendsGroupMapper.selectOne(friendsGroup);
+		
+		FriendsGroup userGroup = new FriendsGroup();
+		userGroup.setOnwerUser(user.getId());
+		userGroup.setType((short) 0);
+		FriendsGroup ug = friendsGroupMapper.selectOne(userGroup);
+		
+		UserFriends uf = new UserFriends();
+		uf.setNotNull(null, user.getId(), friendUser.getId(), ug.getId());
+		int cound = userFriendsMapper.insert(uf);
+		
+		UserFriends ff = new UserFriends();
+		ff.setNotNull(null, friendUser.getId(), user.getId(), fg.getId());
+		cound += userFriendsMapper.insert(ff);
+		if (cound == 2) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+	 * 根据用户名获取用户
+	 * @param username
+	 * @return
+	 */
+	private UserInfo getUserByUsername(String username) {
+		UserInfo record = new UserInfo();
+		record.setUsername(username);
+		return userInfoMapper.selectOne(record);
 	}
 }

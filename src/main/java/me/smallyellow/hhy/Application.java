@@ -9,12 +9,14 @@ import org.tio.im.common.ImConfig;
 import org.tio.im.common.packets.Command;
 import org.tio.im.server.ImServerStarter;
 import org.tio.im.server.command.CommandManager;
+import org.tio.im.server.command.handler.FriendReqHandler;
 import org.tio.im.server.command.handler.HandshakeReqHandler;
 import org.tio.im.server.command.handler.LoginReqHandler;
 
 import com.jfinal.kit.PropKit;
 
 import me.smallyellow.base.boot.web.EnableWebPath;
+import me.smallyellow.hhy.im.command.FriendHandler;
 import me.smallyellow.hhy.im.command.WsHandshakeHandler;
 import me.smallyellow.hhy.im.init.HttpServerInit;
 import me.smallyellow.hhy.im.listener.ImDemoAioListener;
@@ -38,6 +40,8 @@ public class Application {
 			handshakeReqHandler.addProcCmdHandler(new WsHandshakeHandler());//添加自定义握手处理器;
 			LoginReqHandler loginReqHandler = CommandManager.getInstance().getCommand(Command.COMMAND_LOGIN_REQ,LoginReqHandler.class);
 			loginReqHandler.addProcCmdHandler(new UserServiceHandler());//添加登录业务处理器;
+			FriendReqHandler friendReqHandler = CommandManager.getInstance().getCommand(Command.COMMAND_FRIEND_REQ, FriendReqHandler.class);
+			friendReqHandler.addProcCmdHandler(new FriendHandler()); //添加好友业务处理器;
 			imServerStarter.start();
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -31,6 +31,11 @@ public class CommonController {
 	@Autowired
 	private UserService userService;
 	
+	@RequestMapping(value = "/common/test", method = RequestMethod.GET)
+	public String test(HttpServletRequest request, HttpServletResponse response, Model model){
+		return "test";
+	}
+	
 	/**
 	 * 登录
 	 * @param request

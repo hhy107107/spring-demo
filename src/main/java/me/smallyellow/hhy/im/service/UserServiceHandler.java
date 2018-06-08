@@ -46,13 +46,35 @@ public class UserServiceHandler implements LoginCmdHandlerIntf{
 	 * @author: WChao
 	 */
 	public User getUser(String loginname, String password) {
-		String text = loginname+password;
-		String key = Const.authkey;
-		String token = Md5.sign(text, key, HttpConst.CHARSET_NAME);
+		String token = getUserToken(loginname, password);
 		User user = getUserByToken(token, loginname, password);
 		user.setId(loginname);
 		return user;
 	}
+	
+	/**
+	 * 获取token
+	 * @param loginname
+	 * @param password
+	 * @return
+	 */
+	private String getUserToken(String loginname, String password) {
+		String text = loginname+password;
+		String key = Const.authkey;
+		String token = Md5.sign(text, key, HttpConst.CHARSET_NAME);
+		return token;
+	}
+	
+	/**
+	 * 更新userMap
+	 * @param username
+	 */
+	public void updateUserMap(String username) {
+		UserInfo userInfo = userService.getUser(username);
+		String token = getUserToken(username, userInfo.getPassword());
+		tokenMap.put(token, null);
+	}
+	
 	/**
 	 * 根据token获取用户信息
 	 * @param token
@@ -121,6 +143,6 @@ public class UserServiceHandler implements LoginCmdHandlerIntf{
 	@Override
 	public String name() {
 		
-		return "default";
+		return "userServiceHandler";
 	}
 }
